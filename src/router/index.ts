@@ -1,9 +1,27 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import CompleteProfileView from '@/views/auth/CompleteProfileView.vue'
+import RegisterViewVue from '@/views/auth/RegisterView.vue'
+import LoginViewVue from '@/views/auth/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/complete-profile',
+      name: 'complete-profile',
+      component: CompleteProfileView
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterViewVue
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginViewVue
+    },
     {
       path: '/',
       name: 'home',
