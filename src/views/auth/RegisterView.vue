@@ -79,7 +79,7 @@
   </AuthLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useAxiosStore } from '@/services/axios'
 import { useRouter } from 'vue-router'
@@ -95,16 +95,16 @@ const password = ref('')
 
 const submit = async () => {
   try {
-    const result = await axiosStore.post('/auth/register', {
+    const result: any = await axiosStore.post('/auth/register', {
       name: name.value,
       email: email.value,
       password: password.value,
       birthAt: new Date()
-    })
+    });
 
     axiosStore.setToken(result.access_token)
 
-    router.push('complete-profile')
+    router.push('dashboard/complete-profile')
   } catch (error) {
     console.error('Error fetching data:', error)
   }

@@ -1,31 +1,34 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import CompleteProfileView from '@/views/auth/CompleteProfileView.vue'
-import RegisterViewVue from '@/views/auth/RegisterView.vue'
-import LoginViewVue from '@/views/auth/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/complete-profile',
-      name: 'complete-profile',
-      component: CompleteProfileView
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('../views/DashboardView.vue'),
+      children: [
+        {
+          path: 'complete-profile',
+          name: 'complete-profile',
+          component: () => import('../views/dashboard/CompleteProfileView.vue'),
+        }
+      ]
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterViewVue
+      component: () => import('../views/auth/RegisterView.vue')
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginViewVue
+      component: () => import('../views/auth/LoginView.vue')
     },
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/about',

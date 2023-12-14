@@ -61,6 +61,6 @@
   </AuthLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AuthLayout from '@/layouts/AuthLayout.vue'
 </script>
