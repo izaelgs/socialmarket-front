@@ -14,20 +14,14 @@ const props = defineProps({
         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
         alt="Your Company"
       />
-      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight label-text">
         {{ props.title }}
       </h2>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <slot></slot>
-
-      <p class="mt-10 text-center text-sm text-gray-500">
-        Not a member?
-        <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >Start a 14 day free trial</a
-        >
-      </p>
+      <slot name="form"></slot>
+      <slot name="bottom"></slot>
     </div>
   </div>
 </template>

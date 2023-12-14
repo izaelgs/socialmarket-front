@@ -23,7 +23,7 @@
         <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Company</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <router-link to="register" class="text-sm font-semibold leading-6 text-gray-900">Log in <span
+        <router-link to="login" class="text-sm font-semibold leading-6 text-gray-900">Log in <span
             aria-hidden="true">&rarr;</span></router-link>
       </div>
     </nav>
