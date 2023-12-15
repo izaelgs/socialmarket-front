@@ -1,5 +1,5 @@
 <template>
-    <AuthLayout>teste</AuthLayout>
+    <AuthLayout>completando cadastro</AuthLayout>
 </template>
 
 <script setup lang="ts">

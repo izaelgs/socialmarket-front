@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+import Guard from '@/services/middleware';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,7 +14,8 @@ const router = createRouter({
           name: 'complete-profile',
           component: () => import('../views/dashboard/CompleteProfileView.vue'),
         }
-      ]
+      ],
+      beforeEnter: Guard.auth
     },
     {
       path: '/register',
