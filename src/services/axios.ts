@@ -1,5 +1,6 @@
 // src/services/axios.ts
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
+import Cookie from "js-cookie";
 import { defineStore } from 'pinia';
 
 interface AxiosStoreState {
@@ -13,14 +14,14 @@ export const useAxiosStore = defineStore({
     axiosInstance: axios.create({
       baseURL: import.meta.env.VITE_BASE_URL,
     }),
-    token: localStorage.getItem('token') ?? null,
+    token: Cookie.get('access_token') ?? null,
   }),
 
   actions: {
     setToken(token: string) {
       this.token = token;
       this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      localStorage.setItem('token', token);
+      Cookie.set('access_token', token);
     },
 
     removeToken() {
