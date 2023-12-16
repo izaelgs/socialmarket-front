@@ -85,11 +85,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from 'vue'
-import { useAxiosStore } from '@/services/axios'
-import { useRouter } from 'vue-router'
+import { ref, type Ref } from 'vue';
+import { useAxiosStore } from '@/services/axios';
+import { useRouter } from 'vue-router';
 
-import AuthLayout from '@/layouts/AuthLayout.vue'
+import AuthLayout from '@/layouts/AuthLayout.vue';
+import { toast } from 'vue3-toastify';
 
 const axiosStore = useAxiosStore()
 const router = useRouter()
@@ -118,19 +119,21 @@ const submit = async () => {
 
     isLoading.value = false;
   } catch (error: any) {
+    isLoading.value = false;
+
     if(error.message && Array.isArray(error.message)) {
-      error.message.forEach((err: string) => {
+      return error.message.forEach((err: string) => {
         const field = err.split(' ')[0];
 
         if(errors.value.includes(field))
           return;
 
         errors.value.push(field);
+        toast.error(err);
       });
     }
 
     console.error('Error fetching data:', error);
-    isLoading.value = false;
   }
 }
 </script>
