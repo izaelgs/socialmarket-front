@@ -10,6 +10,11 @@ const router = createRouter({
       component: () => import('../views/DashboardView.vue'),
       children: [
         {
+          path: './',
+          name: 'home',
+          component: () => import('../views/dashboard/HomeView.vue'),
+        },
+        {
           path: 'complete-profile',
           name: 'complete-profile',
           component: () => import('../views/dashboard/CompleteProfileView.vue'),
@@ -29,7 +34,7 @@ const router = createRouter({
     },
     {
       path: '/',
-      name: 'home',
+      name: 'index',
       component: () => import('../views/HomeView.vue')
     },
     {
