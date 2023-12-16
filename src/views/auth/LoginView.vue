@@ -70,14 +70,16 @@
 
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { useAxiosStore } from '@/services/axios';
+import { useAxiosStore } from '@/services/axiosStore';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/services/userStore';
 
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { toast } from 'vue3-toastify';
 
 const axiosStore = useAxiosStore()
 const router = useRouter()
+const userStore = useUserStore();
 
 const email = ref('')
 const password = ref('')
@@ -95,6 +97,7 @@ const submit = async () => {
     })
 
     axiosStore.setToken(result.access_token);
+    userStore.setUser(result.access_token);
 
     router.push('dashboard/');
 

@@ -21,6 +21,8 @@ export default {
         if (!data.name) {
           next('/login')
         }
+
+        localStorage.setItem('user', JSON.stringify(data));
       })
 
     next();

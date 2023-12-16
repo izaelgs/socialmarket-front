@@ -1,4 +1,4 @@
-// src/services/axios.ts
+// src/services/axiosStore.ts
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import Cookie from "js-cookie";
 import { defineStore } from 'pinia';
@@ -41,6 +41,15 @@ export const useAxiosStore = defineStore({
     async post<T>(url: string, data: any, config = {}): Promise<T> {
       try {
         const response: AxiosResponse<T> = await this.axiosInstance.post(url, data, config);
+        return response.data;
+      } catch (error: any) {
+        throw error.response.data;
+      }
+    },
+
+    async put<T>(url: string, data: any, config = {}): Promise<T> {
+      try {
+        const response: AxiosResponse<T> = await this.axiosInstance.put(url, data, config);
         return response.data;
       } catch (error: any) {
         throw error.response.data;

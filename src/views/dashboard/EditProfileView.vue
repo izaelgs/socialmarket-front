@@ -16,7 +16,7 @@
             >
             <div class="mt-2">
               <div
-                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-1 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
+                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-600 focus-within:ring-1 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
               >
                 <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm"
                   >workcation.com/</span
@@ -24,9 +24,10 @@
                 <input
                   type="text"
                   name="username"
+                  v-model="user.username"
                   id="username"
                   autocomplete="username"
-                  class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-light-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-light-900 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="janesmith"
                 />
               </div>
@@ -42,8 +43,9 @@
               <textarea
                 id="about"
                 name="about"
+                v-model="user.about"
                 rows="3"
-                class="block w-full rounded-md border-0 py-1.5 text-light-900 bg-transparent shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 bg-transparent shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               ></textarea>
             </div>
             <p class="mt-3 text-sm leading-6 text-gray-600">
@@ -69,6 +71,9 @@
                   clip-rule="evenodd"
                 />
               </svg>
+
+              <input id="photo" type="file" class="sr-only" />
+
               <button
                 type="button"
                 class="rounded-md bg-gray-800 px-2.5 py-1.5 text-sm font-semibold text-light-900 shadow-sm ring-inset ring-0 hover:bg-gray-900"
@@ -100,11 +105,11 @@
                 </svg>
                 <div class="mt-4 flex text-sm leading-6 text-gray-600">
                   <label
-                    for="file-upload"
+                    for="cover_photo"
                     class="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                   >
                     <span>Upload a file</span>
-                    <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+                    <input id="cover_photo" name="cover_photo" type="file" class="sr-only" />
                   </label>
                   <p class="pl-1">or drag and drop</p>
                 </div>
@@ -130,9 +135,10 @@
               <input
                 type="text"
                 name="first-name"
+                v-model="user.name"
                 id="first-name"
                 autocomplete="given-name"
-                class="block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -146,24 +152,26 @@
               <input
                 id="email"
                 name="email"
+                v-model="user.email"
                 type="email"
                 autocomplete="email"
-                class="block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
 
           <!-- Birth At-->
           <div class="sm:col-span-2 sm:col-start-1">
-            <label for="city" class="block text-sm font-medium leading-6 text-light-900">Birth At</label
+            <label for="birthAt" class="block text-sm font-medium leading-6 text-light-900">Birth At</label
             >
             <div class="mt-2">
               <input
                 type="date"
-                name="city"
-                id="city"
+                name="birthAt"
+                v-model="user.birthAt"
+                id="birthAt"
                 autocomplete="address-level2"
-                class="block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -189,6 +197,7 @@
                   <input
                     id="comments"
                     name="comments"
+                    v-model="user.comments"
                     type="checkbox"
                     class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
@@ -219,7 +228,14 @@
 </template>
 
 <script setup lang="ts">
+
+import { useAxiosStore } from '@/services/axiosStore';
+import { useUserStore } from '@/services/userStore';
+
+const user = useUserStore();
+const axios = useAxiosStore();
+
 const submit = async () => {
-  console.log('savind...')
+  axios.put('user' + user.id, user)
 }
 </script>
