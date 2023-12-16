@@ -8,7 +8,7 @@ interface UserState {
   photo: string | null;
   cover_photo: string | null;
   birthAt: string | null;
-  comments: string[];
+  comments: Boolean;
   name: string | null; // Adicione a propriedade 'name'
 }
 
@@ -22,7 +22,7 @@ export const useUserStore = defineStore({
     photo: null,
     cover_photo: null,
     birthAt: null,
-    comments: [],
+    comments: false,
     name: null, // Inicialize a propriedade 'name'
   }),
   getters: {
@@ -47,7 +47,7 @@ export const useUserStore = defineStore({
       this.photo = photo;
       this.cover_photo = cover_photo;
       this.birthAt = birthAt;
-      this.comments = comments || [];
+      this.comments = comments || false;
       this.name = name; // Atualize a propriedade 'name'
       this.saveToLocalStorage();
     },
@@ -59,7 +59,7 @@ export const useUserStore = defineStore({
       this.photo = null;
       this.cover_photo = null;
       this.birthAt = null;
-      this.comments = [];
+      this.comments = false;
       this.name = null; // Limpe a propriedade 'name' também
       this.removeFromLocalStorage();
     },

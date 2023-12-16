@@ -4,7 +4,7 @@
   <div class="ml-16">
     <div class="py-6 shadow">
       <div class="lg:flex lg:items-center lg:justify-between sm:mx-auto sm:max-w-2xl ">
-        <h2 class="text-2xl font-bold leading-7 sm:truncate sm:text-2xl sm:tracking-tight">{{ pageTitle }}</h2>
+        <h2 class="text-2xl font-bold leading-7 sm:truncate sm:text-2xl sm:tracking-tight">{{ route.name }}</h2>
       </div>
     </div>
     <div class="lg:flex lg:items-center lg:justify-between sm:mx-auto sm:max-w-2xl py-6">
@@ -23,6 +23,4 @@ const user = useUserStore();
 const route = useRoute();
 
 user.loadFromLocalStorage();
-
-const pageTitle = route.name || 'Default Title';
 </script>

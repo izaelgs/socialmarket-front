@@ -1,6 +1,6 @@
 <template>
-  <RouterLink :to="{name: props.path}" class="sidebar-icon group">
-    <Icon :icon="props.icon" />
+  <RouterLink :to="{path: props.path}" class="sidebar-icon group">
+    <Icon :icon="props.icon" class="text-2xl"/>
 
     <span class="sidebar-tooltip group-hover:scale-100"> {{ props.tooltip }} </span>
   </RouterLink>
