@@ -115,7 +115,7 @@ const submit = async () => {
 
     axiosStore.setToken(result.access_token);
 
-    router.push('dashboard/complete-profile');
+    router.push('dashboard/edit-profile');
 
     isLoading.value = false;
   } catch (error: any) {
