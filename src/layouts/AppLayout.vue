@@ -1,9 +1,10 @@
 <template>
-  <header class="flex">
-    <Sidebar />
-  </header>
+  <Sidebar />
 
-  <RouterView />
+  <div class="ml-5 flex justify-center m-5">
+    <RouterView />
+  </div>
+
 </template>
 
 <script setup lang="ts">
