@@ -11,17 +11,16 @@
               name="name"
               v-model="name"
               type="text"
-              required
               class="input input-bordered w-full"
+              :class="{'input-error': errors.includes('name')}"
+              @input="errors.splice(errors.indexOf('name'),1)"
             />
           </div>
         </div>
 
         <!-- E-mail -->
         <div>
-          <label for="email" class="label-text"
-            >Email address</label
-          >
+          <label for="email" class="label-text">Email address</label>
           <div class="mt-2">
             <input
               id="email"
@@ -29,8 +28,9 @@
               v-model="email"
               type="email"
               autocomplete="email"
-              required
               class="input input-bordered w-full"
+              :class="{'input-error': errors.includes('email')}"
+              @input="errors.includes('email') && errors.splice(errors.indexOf('email'),1)"
             />
           </div>
         </div>
@@ -38,9 +38,7 @@
         <!-- Password -->
         <div>
           <div class="flex items-center justify-between">
-            <label for="password" class="label-text"
-              >Password</label
-            >
+            <label for="password" class="label-text">Password</label>
           </div>
           <div class="mt-2">
             <input
@@ -49,8 +47,9 @@
               v-model="password"
               type="password"
               autocomplete="current-password"
-              required
               class="input input-bordered w-full"
+              :class="{'input-error': errors.includes('password')}"
+              @input="errors.includes('password') && errors.splice(errors.indexOf('password'),1)"
             />
           </div>
         </div>
@@ -59,8 +58,14 @@
           <button
             type="submit"
             class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            :disabled="isLoading"
           >
-            Register
+            <template v-if="isLoading">
+              Loading, please await :P <span class="loading loading-dots loading-xs m-1 mt-2"></span>
+            </template>
+            <template v-else>
+              Register
+            </template>
           </button>
         </div>
       </form>
@@ -80,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, Ref } from 'vue'
 import { useAxiosStore } from '@/services/axios'
 import { useRouter } from 'vue-router'
 
@@ -93,20 +98,39 @@ const name = ref('')
 const email = ref('')
 const password = ref('')
 
+const isLoading = ref(false);
+const errors: Ref<Array<string>> = ref([]);
+
 const submit = async () => {
+  isLoading.value = true;
+
   try {
     const result: any = await axiosStore.post('/auth/register', {
       name: name.value,
       email: email.value,
       password: password.value,
       birthAt: new Date()
-    });
+    })
 
-    axiosStore.setToken(result.access_token)
+    axiosStore.setToken(result.access_token);
 
-    router.push('dashboard/complete-profile')
-  } catch (error) {
-    console.error('Error fetching data:', error)
+    router.push('dashboard/complete-profile');
+
+    isLoading.value = false;
+  } catch (error: any) {
+    if(error.message && Array.isArray(error.message)) {
+      error.message.forEach((err: string) => {
+        const field = err.split(' ')[0];
+
+        if(errors.value.includes(field))
+          return;
+
+        errors.value.push(field);
+      });
+    }
+
+    console.error('Error fetching data:', error);
+    isLoading.value = false;
   }
 }
 </script>
