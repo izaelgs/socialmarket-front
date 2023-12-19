@@ -86,7 +86,7 @@
 
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { useAxiosStore } from '@/services/axios';
+import { useAxiosStore } from '@/services/axiosStore';
 import { useRouter } from 'vue-router';
 
 import AuthLayout from '@/layouts/AuthLayout.vue';

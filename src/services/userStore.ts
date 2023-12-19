@@ -2,14 +2,14 @@ import { defineStore } from 'pinia';
 
 interface UserState {
   id: string | null;
+  name: string | null;
   username: string | null;
   email: string | null;
+  birthAt: string | null;
   about: string;
   photo: string | null;
   cover_photo: string | null;
-  birthAt: string | null;
   comments: Boolean;
-  name: string | null; // Adicione a propriedade 'name'
 }
 
 export const useUserStore = defineStore({
