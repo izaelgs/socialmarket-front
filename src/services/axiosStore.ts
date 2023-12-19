@@ -13,6 +13,11 @@ export const useAxiosStore = defineStore({
   state: (): AxiosStoreState => ({
     axiosInstance: axios.create({
       baseURL: import.meta.env.VITE_BASE_URL,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${Cookie.get('access_token') ?? ''}`,
+      },
     }),
     token: Cookie.get('access_token') ?? null,
   }),
@@ -50,6 +55,15 @@ export const useAxiosStore = defineStore({
     async put<T>(url: string, data: any, config = {}): Promise<T> {
       try {
         const response: AxiosResponse<T> = await this.axiosInstance.put(url, data, config);
+        return response.data;
+      } catch (error: any) {
+        throw error.response.data;
+      }
+    },
+
+    async patch<T>(url: string, data: any, config = {}): Promise<T> {
+      try {
+        const response: AxiosResponse<T> = await this.axiosInstance.patch(url, data, config);
         return response.data;
       } catch (error: any) {
         throw error.response.data;

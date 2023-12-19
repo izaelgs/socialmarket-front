@@ -45,7 +45,7 @@
                 name="about"
                 v-model="user.about"
                 rows="3"
-                class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 bg-transparent shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               ></textarea>
             </div>
             <p class="mt-3 text-sm leading-6 text-gray-600">
@@ -236,6 +236,6 @@ const user = useUserStore();
 const axios = useAxiosStore();
 
 const submit = async () => {
-  axios.put('user' + user.id, user)
+  axios.patch('auth', user)
 }
 </script>
