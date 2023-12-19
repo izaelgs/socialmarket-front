@@ -92,6 +92,8 @@ import { useRouter } from 'vue-router';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { toast } from 'vue3-toastify';
 
+import{ User } from '@/services/types/auth';
+
 const axiosStore = useAxiosStore()
 const router = useRouter()
 
@@ -106,12 +108,16 @@ const submit = async () => {
   isLoading.value = true;
 
   try {
-    const result: any = await axiosStore.post('/auth/register', {
+
+    const payload: User = {
       name: name.value,
+      username: name.value,
       email: email.value,
       password: password.value,
       birthAt: new Date()
-    })
+    }
+
+    const result: any = await axiosStore.post('/auth/register', payload);
 
     axiosStore.setToken(result.access_token);
 
