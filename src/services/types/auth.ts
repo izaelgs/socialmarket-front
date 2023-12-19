@@ -5,9 +5,9 @@ export type User = {
   password: string
   birthAt?: Date
   username: string
-  about?: string
-  photo?: string
-  cover_photo?: string
+  about: string
+  photo: string
+  cover_photo: string
 };
 
 export type UserState = {
