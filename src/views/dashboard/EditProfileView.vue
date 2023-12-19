@@ -85,10 +85,12 @@
 
           <!-- Cover Photo -->
           <div class="col-span-full">
-            <label for="cover-photo" class="block text-sm font-medium leading-6 text-light-900">Cover photo</label
+            <label for="cover-photo" class="block text-sm font-medium leading-6 text-light-900"
+              >Cover photo</label
             >
             <div
-              class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-500 px-6 py-10" role="button"
+              class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-500 px-6 py-10"
+              role="button"
             >
               <div class="text-center">
                 <svg
@@ -130,7 +132,9 @@
         <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <!-- Name -->
           <div class="col-span-full">
-            <label for="first-name" class="block text-sm font-medium leading-6 text-light-900">Name</label>
+            <label for="first-name" class="block text-sm font-medium leading-6 text-light-900"
+              >Name</label
+            >
             <div class="mt-2">
               <input
                 type="text"
@@ -162,7 +166,8 @@
 
           <!-- Birth At-->
           <div class="sm:col-span-2 sm:col-start-1">
-            <label for="birthAt" class="block text-sm font-medium leading-6 text-light-900">Birth At</label
+            <label for="birthAt" class="block text-sm font-medium leading-6 text-light-900"
+              >Birth At</label
             >
             <div class="mt-2">
               <input
@@ -228,14 +233,22 @@
 </template>
 
 <script setup lang="ts">
+import { useAxiosStore } from '@/services/axiosStore'
+import { useUserStore } from '@/services/userStore'
+import { onMounted } from 'vue'
 
-import { useAxiosStore } from '@/services/axiosStore';
-import { useUserStore } from '@/services/userStore';
-
-const user = useUserStore();
-const axios = useAxiosStore();
+const user = useUserStore()
+const axios = useAxiosStore()
 
 const submit = async () => {
-  axios.patch('auth', user)
+  user.birthAt = new Date(user.birthAt as string | number).toISOString()
+
+  await axios.patch('auth', user);
+
+  user.birthAt = new Date(user.birthAt as string).toISOString().split('T')[0]
 }
+
+onMounted(() => {
+  user.birthAt = new Date(user.birthAt as string).toISOString().split('T')[0]
+})
 </script>
