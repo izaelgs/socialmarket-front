@@ -1,30 +1,27 @@
-import Cookie from "js-cookie";
+// Importe a instância do Axios
+import { useAxiosStore } from '@/services/axiosStore'; // Substitua pelo caminho real do seu arquivo
 
 export default {
-  auth(to: any, from: any, next: any) {
-    const token = Cookie.get('access_token');
+  async auth(to: any, from: any, next: (arg0?: string) => void) {
+    try {
+      // Utilize a instância do Axios
+      const axiosStore = useAxiosStore();
+      const response: any = await axiosStore.post('auth/me', {}, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
 
-    if (!token) {
-      next('/login')
-    }
-
-    fetch('http://localhost:3000/auth/me', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
+      if (!response.name) {
+        next('/login');
       }
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (!data.name) {
-          next('/login')
-        }
 
-        localStorage.setItem('user', JSON.stringify(data));
-      })
-
-    next();
+      localStorage.setItem('user', JSON.stringify(response));
+      next();
+    } catch (error) {
+      console.error('Erro ao verificar autenticação:', error);
+      next('/login');
+    }
   }
-}
+};

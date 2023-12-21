@@ -96,8 +96,7 @@ const submit = async () => {
       password: password.value,
     })
 
-    axiosStore.setToken(result.access_token);
-    userStore.setUser(result.access_token);
+    userStore.setUser(result.user);
 
     router.push('dashboard/');
 
