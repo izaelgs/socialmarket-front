@@ -3,7 +3,7 @@ export type User = {
   name: string
   email: string
   password: string
-  birthAt?: Date
+  birthAt?: string
   username: string
   about: string
   photo: string

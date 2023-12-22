@@ -92,9 +92,11 @@ import AuthLayout from '@/layouts/AuthLayout.vue'
 import { toast } from 'vue3-toastify'
 
 import { User } from '@/services/types/auth'
+import { useUserStore } from '@/services/userStore'
 
 const axiosStore = useAxiosStore()
 const router = useRouter()
+const userStore = useUserStore();
 
 const name = ref('')
 const email = ref('')
@@ -107,12 +109,15 @@ const submit = async () => {
   isLoading.value = true
 
   try {
+
+    userStore.removeFromLocalStorage();
+
     const payload: User = {
       name: name.value,
       username: name.value,
       email: email.value,
       password: password.value,
-      birthAt: new Date(),
+      birthAt: new Date().toISOString().split('T')[0],
       about: '',
       photo: '',
       cover_photo : '',
@@ -120,7 +125,7 @@ const submit = async () => {
 
     const result: any = await axiosStore.post('/auth/register', payload)
 
-    axiosStore.setToken(result.access_token)
+    userStore.setUser(result.user);
 
     router.push('dashboard/edit-profile')
 
@@ -138,6 +143,8 @@ const submit = async () => {
         toast.error(err)
       })
     }
+
+    toast.error(error.message)
 
     console.error('Error fetching data:', error)
   }
