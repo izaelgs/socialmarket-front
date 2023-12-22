@@ -88,11 +88,13 @@
             <label for="cover-photo" class="block text-sm font-medium leading-6 text-light-900"
               >Cover photo</label
             >
-            <div
-              class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-500 px-6 py-10"
+            <form
+              action="/target"
+              class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-500 relative h-44"
               role="button"
+              id="cover-image-dropzone"
             >
-              <div class="text-center">
+              <div class="text-center absolute w-full h-full flex flex-col items-center justify-center">
                 <svg
                   class="mx-auto h-12 w-12 text-gray-300"
                   viewBox="0 0 24 24"
@@ -111,13 +113,12 @@
                     class="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                   >
                     <span>Upload a file</span>
-                    <input id="cover_photo" name="cover_photo" type="file" class="sr-only" />
                   </label>
                   <p class="pl-1">or drag and drop</p>
                 </div>
                 <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -235,20 +236,44 @@
 <script setup lang="ts">
 import { useAxiosStore } from '@/services/axiosStore'
 import { useUserStore } from '@/services/userStore'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+
+import Dropzone from 'dropzone'
 
 const user = useUserStore()
 const axios = useAxiosStore()
 
+let coverImageDropzone = null
+
 const submit = async () => {
   user.birthAt = new Date(user.birthAt as string | number).toISOString()
 
-  await axios.patch('auth', user);
+  await axios.patch('auth', user)
 
   user.birthAt = new Date(user.birthAt as string).toISOString().split('T')[0]
 }
 
 onMounted(() => {
   user.birthAt = new Date(user.birthAt as string).toISOString().split('T')[0]
+
+  coverImageDropzone = new Dropzone('#cover-image-dropzone')
+  coverImageDropzone.on('addedfile', (file: any) => {
+    console.log(file)
+  })
 })
 </script>
+
+<style>
+.dz-preview {
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.dz-image, .dz-image img {
+  width: 100%;
+  position: absolute;
+}
+</style>
