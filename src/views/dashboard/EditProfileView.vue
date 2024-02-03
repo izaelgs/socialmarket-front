@@ -236,14 +236,10 @@
 <script setup lang="ts">
 import { useAxiosStore } from '@/services/axiosStore'
 import { useUserStore } from '@/services/userStore'
-import { onMounted, ref } from 'vue'
-
-import Dropzone from 'dropzone'
+import { onMounted } from 'vue'
 
 const user = useUserStore()
 const axios = useAxiosStore()
-
-let coverImageDropzone = null
 
 const submit = async () => {
   user.birthAt = new Date(user.birthAt as string | number).toISOString()
@@ -255,11 +251,6 @@ const submit = async () => {
 
 onMounted(() => {
   user.birthAt = new Date(user.birthAt as string).toISOString().split('T')[0]
-
-  coverImageDropzone = new Dropzone('#cover-image-dropzone')
-  coverImageDropzone.on('addedfile', (file: any) => {
-    console.log(file)
-  })
 })
 </script>
 

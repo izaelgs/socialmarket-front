@@ -6,7 +6,7 @@ interface UserState {
   username: string | null;
   email: string | null;
   birthAt: string | null;
-  about: Date | null;
+  about: string;
   photo: string | null;
   cover_photo: string | null;
   comments: Boolean;
@@ -18,7 +18,7 @@ export const useUserStore = defineStore({
     id: null,
     username: null,
     email: null,
-    about: null,
+    about: '',
     photo: null,
     cover_photo: null,
     birthAt: null,
@@ -55,7 +55,7 @@ export const useUserStore = defineStore({
       this.id = null;
       this.username = null;
       this.email = null;
-      this.about = null;
+      this.about = '';
       this.photo = null;
       this.cover_photo = null;
       this.birthAt = null;

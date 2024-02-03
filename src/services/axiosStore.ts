@@ -1,5 +1,5 @@
 // src/services/axiosStore.ts
-import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
+import axios, { AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
 
 interface AxiosStoreState {
@@ -25,7 +25,16 @@ export const useAxiosStore = defineStore({
         const response: AxiosResponse<T> = await this.axiosInstance.get(url, config);
         return response.data;
       } catch (error: any) {
-        throw error.response.data;
+
+        if(error instanceof AxiosError) {
+          if(error.response?.status === 403) {
+            window.location.href = '/login';
+          }
+
+          if(error.response) throw error.response.data;
+        }
+
+        throw error;
       }
     },
 
@@ -43,7 +52,16 @@ export const useAxiosStore = defineStore({
         const response: AxiosResponse<T> = await this.axiosInstance.put(url, data, config);
         return response.data;
       } catch (error: any) {
-        throw error.response.data;
+
+        if(error instanceof AxiosError) {
+          if(error.response?.status === 403) {
+            window.location.href = '/login';
+          }
+
+          if(error.response) throw error.response.data;
+        }
+
+        throw error;
       }
     },
 
@@ -52,7 +70,15 @@ export const useAxiosStore = defineStore({
         const response: AxiosResponse<T> = await this.axiosInstance.patch(url, data, config);
         return response.data;
       } catch (error: any) {
-        throw error.response.data;
+        if(error instanceof AxiosError) {
+          if(error.response?.status === 403) {
+            window.location.href = '/login';
+          }
+
+          if(error.response) throw error.response.data;
+        }
+
+        throw error;
       }
     },
   },
