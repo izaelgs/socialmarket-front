@@ -4,14 +4,14 @@
       <form @submit.prevent="submit" class="space-y-6" action="#" method="POST">
         <!-- Name -->
         <div>
-          <label for="email" class="label-text">Name</label>
+          <label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">Name</label>
           <div class="mt-2">
             <input
               id="name"
               name="name"
               v-model="name"
               type="text"
-              class="input input-bordered w-full"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               :class="{ 'input-error': errors.includes('name') }"
               @input="errors.splice(errors.indexOf('name'), 1)"
             />
@@ -20,7 +20,7 @@
 
         <!-- E-mail -->
         <div>
-          <label for="email" class="label-text">Email address</label>
+          <label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">Email address</label>
           <div class="mt-2">
             <input
               id="email"
@@ -28,7 +28,7 @@
               v-model="email"
               type="email"
               autocomplete="email"
-              class="input input-bordered w-full"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               :class="{ 'input-error': errors.includes('email') }"
               @input="errors.includes('email') && errors.splice(errors.indexOf('email'), 1)"
             />
@@ -38,7 +38,7 @@
         <!-- Password -->
         <div>
           <div class="flex items-center justify-between">
-            <label for="password" class="label-text">Password</label>
+            <label for="password" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">Password</label>
           </div>
           <div class="mt-2">
             <input
@@ -47,7 +47,7 @@
               v-model="password"
               type="password"
               autocomplete="current-password"
-              class="input input-bordered w-full"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-90 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               :class="{ 'input-error': errors.includes('password') }"
               @input="errors.includes('password') && errors.splice(errors.indexOf('password'), 1)"
             />

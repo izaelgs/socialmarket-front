@@ -8,7 +8,6 @@ export default {
     extend: {},
   },
   plugins: [
-    require("daisyui"),
     require('@tailwindcss/forms'),
   ],
   darkMode: 'class',

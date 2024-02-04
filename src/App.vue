@@ -1,5 +1,5 @@
 <template>
-  <div :class="darkMode ? 'dark' : null">
+  <div :class="(darkMode ? 'dark' : null) + ' h-screen'">
     <RouterView />
   </div>
 </template>
