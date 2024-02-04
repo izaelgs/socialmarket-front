@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
+import type { User } from '@/services/types/auth'
 
 interface UserState {
-  id: string | null;
+  id: number | null;
   name: string | null;
   username: string | null;
   email: string | null;
@@ -37,17 +38,15 @@ export const useUserStore = defineStore({
       photo,
       cover_photo,
       birthAt,
-      comments,
       name, // Adicione 'name' aos parâmetros da ação setUser
-    }: UserState) {
-      this.id = id;
+    }: User) {
+      if (id) this.id = id;
       this.username = username;
       this.email = email;
       this.about = about;
       this.photo = photo;
       this.cover_photo = cover_photo;
-      this.birthAt = birthAt;
-      this.comments = comments || false;
+      if (birthAt) this.birthAt = birthAt;
       this.name = name; // Atualize a propriedade 'name'
       this.saveToLocalStorage();
     },

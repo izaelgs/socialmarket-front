@@ -91,7 +91,7 @@ import { useRouter } from 'vue-router'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { toast } from 'vue3-toastify'
 
-import { User } from '@/services/types/auth'
+import { type User } from '@/services/types/auth'
 import { useUserStore } from '@/services/userStore'
 
 const axiosStore = useAxiosStore()

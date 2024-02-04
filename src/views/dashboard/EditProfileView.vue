@@ -55,31 +55,46 @@
 
           <!-- Photo -->
           <div class="col-span-full">
-            <label for="photo" class="block text-sm font-medium leading-6 text-light-900"
-              >Photo</label
+            <span for="photo" class="block text-sm font-medium leading-6 text-light-900"
+              >Photo</span
             >
             <div class="mt-2 flex items-center gap-x-3">
-              <svg
-                class="h-12 w-12 text-gray-300"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                  clip-rule="evenodd"
+              <template v-if="previewAvatarUrl || user.photo">
+                <img
+                  :src="previewAvatarUrl ?? user.photo"
+                  alt="User avatar"
+                  class="h-12 w-12 rounded-full object-cover object-center"
                 />
-              </svg>
+              </template>
+              <template v-else>
+                <svg
+                  class="h-12 w-12 text-gray-300"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </template>
 
-              <input id="photo" type="file" class="sr-only" />
+              <input
+                id="photo"
+                type="file"
+                @change="(e) => previewFiles(e as InputFileEvent)"
+                class="sr-only"
+              />
 
-              <button
-                type="button"
+              <label
+                for="photo"
+                role="button"
                 class="rounded-md bg-gray-800 px-2.5 py-1.5 text-sm font-semibold text-light-900 shadow-sm ring-inset ring-0 hover:bg-gray-900"
               >
                 Change
-              </button>
+              </label>
             </div>
           </div>
 
@@ -94,7 +109,9 @@
               role="button"
               id="cover-image-dropzone"
             >
-              <div class="text-center absolute w-full h-full flex flex-col items-center justify-center">
+              <div
+                class="text-center absolute w-full h-full flex flex-col items-center justify-center"
+              >
                 <svg
                   class="mx-auto h-12 w-12 text-gray-300"
                   viewBox="0 0 24 24"
@@ -236,17 +253,67 @@
 <script setup lang="ts">
 import { useAxiosStore } from '@/services/axiosStore'
 import { useUserStore } from '@/services/userStore'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import { type InputFileEvent } from '@/services/types/input'
+import { AxiosError } from 'axios'
+import { toast } from 'vue3-toastify'
+import type { User } from '@/services/types/auth'
 
 const user = useUserStore()
 const axios = useAxiosStore()
 
+const profuleAvatarFile = ref<File>()
+const previewAvatarUrl = ref<string | null>(null)
+
+const { setUser } = useUserStore()
+
 const submit = async () => {
-  user.birthAt = new Date(user.birthAt as string | number).toISOString()
+  try {
+    const form = new FormData()
 
-  await axios.patch('auth', user)
+    Object.entries(user).forEach((entry) => {
+      if (!['string', 'number'].includes(typeof entry[1]) && !(entry[1] instanceof File)) return
+      if (typeof entry[1] === 'string' && entry[1].includes('$')) return
 
-  user.birthAt = new Date(user.birthAt as string).toISOString().split('T')[0]
+      if (entry[0] === 'birthAt') {
+        form.append(entry[0], new Date(entry[1] as string).toISOString().split('T')[0])
+      } else if (!entry[0].includes('photo')) {
+        form.append(entry[0], entry[1])
+      } else if (entry[0] === 'photo' && profuleAvatarFile.value) {
+        form.append('photo', profuleAvatarFile.value)
+      }
+    })
+
+    user.birthAt = new Date(user.birthAt as string | number).toISOString()
+
+    const data = await axios.patch<User>('auth', form, {
+      headers: {
+        'content-type': 'multipart/form-data' // do not forget this
+      }
+    })
+
+    setUser(data)
+
+    user.birthAt = new Date(user.birthAt as string).toISOString().split('T')[0]
+
+    toast.success('Profile updated successfully.')
+  } catch (error: any) {
+    console.error('Error fetching data:', error)
+
+    if (error instanceof AxiosError) {
+      if (error.response?.data.message) return toast.error(error.response.data.message)
+    }
+
+    toast.error('Error updating profile. Please try again later.')
+  }
+}
+
+const previewFiles = (event: InputFileEvent) => {
+  if (!event.target.files) return
+
+  const file = event.target.files[0]
+  previewAvatarUrl.value = URL.createObjectURL(file)
+  profuleAvatarFile.value = file
 }
 
 onMounted(() => {
@@ -263,8 +330,10 @@ onMounted(() => {
   position: relative;
 }
 
-.dz-image, .dz-image img {
+.dz-image,
+.dz-image img {
   width: 100%;
   position: absolute;
 }
 </style>
+@/services/types/input
