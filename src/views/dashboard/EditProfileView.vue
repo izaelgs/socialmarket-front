@@ -61,7 +61,7 @@
             <div class="mt-2 flex items-center gap-x-3">
               <template v-if="previewAvatarUrl || user.photo">
                 <img
-                  :src="previewAvatarUrl ?? user.photo"
+                  :src="previewAvatarUrl ? previewAvatarUrl : user.photo ?? ''"
                   alt="User avatar"
                   class="h-12 w-12 rounded-full object-cover object-center"
                 />
@@ -84,7 +84,7 @@
               <input
                 id="photo"
                 type="file"
-                @change="(e) => previewFiles(e as InputFileEvent)"
+                @change="(e) => previweAvatarFile(e as InputFileEvent)"
                 class="sr-only"
               />
 
@@ -100,14 +100,16 @@
 
           <!-- Cover Photo -->
           <div class="col-span-full">
-            <label for="cover-photo" class="block text-sm font-medium leading-6 text-light-900"
-              >Cover photo</label
-            >
-            <form
-              action="/target"
+            <span class="block text-sm font-medium leading-6 text-light-900">Cover photo</span>
+            <label
+              for="cover_photo"
               class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-500 relative h-44"
               role="button"
-              id="cover-image-dropzone"
+              :style="
+                user.cover_photo || perviewCoverPhotoUrl ? `background-image: url(${perviewCoverPhotoUrl ?? user.cover_photo});
+                background-repeat: no-repeat;
+                background-size: cover;` : ''
+              "
             >
               <div
                 class="text-center absolute w-full h-full flex flex-col items-center justify-center"
@@ -125,17 +127,23 @@
                   />
                 </svg>
                 <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                  <label
-                    for="cover_photo"
+                  <span
                     class="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                   >
                     <span>Upload a file</span>
-                  </label>
+                  </span>
                   <p class="pl-1">or drag and drop</p>
+
+                  <input
+                    id="cover_photo"
+                    type="file"
+                    @change="(e) => previweCoverFile(e as InputFileEvent)"
+                    class="sr-only"
+                  />
                 </div>
                 <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
               </div>
-            </form>
+            </label>
           </div>
         </div>
       </div>
@@ -262,8 +270,11 @@ import type { User } from '@/services/types/auth'
 const user = useUserStore()
 const axios = useAxiosStore()
 
-const profuleAvatarFile = ref<File>()
+const profileAvatarFile = ref<File>()
+const coverPhotoFile = ref<File>()
+
 const previewAvatarUrl = ref<string | null>(null)
+const perviewCoverPhotoUrl = ref<string | null>(null)
 
 const { setUser } = useUserStore()
 
@@ -273,14 +284,16 @@ const submit = async () => {
 
     Object.entries(user).forEach((entry) => {
       if (!['string', 'number'].includes(typeof entry[1]) && !(entry[1] instanceof File)) return
-      if (typeof entry[1] === 'string' && entry[1].includes('$')) return
+      if (typeof entry[1] === 'string' && entry[0].includes('$')) return
 
       if (entry[0] === 'birthAt') {
         form.append(entry[0], new Date(entry[1] as string).toISOString().split('T')[0])
       } else if (!entry[0].includes('photo')) {
         form.append(entry[0], entry[1])
-      } else if (entry[0] === 'photo' && profuleAvatarFile.value) {
-        form.append('photo', profuleAvatarFile.value)
+      } else if (entry[0] === 'photo' && profileAvatarFile.value) {
+        form.append('photo', profileAvatarFile.value)
+      } else if (entry[0] === 'cover_photo' && coverPhotoFile.value) {
+        form.append('cover_photo', coverPhotoFile.value)
       }
     })
 
@@ -308,12 +321,20 @@ const submit = async () => {
   }
 }
 
-const previewFiles = (event: InputFileEvent) => {
+const previweAvatarFile = (event: InputFileEvent) => {
   if (!event.target.files) return
 
   const file = event.target.files[0]
   previewAvatarUrl.value = URL.createObjectURL(file)
-  profuleAvatarFile.value = file
+  profileAvatarFile.value = file
+}
+
+const previweCoverFile = (event: InputFileEvent) => {
+  if (!event.target.files) return
+
+  const file = event.target.files[0]
+  perviewCoverPhotoUrl.value = URL.createObjectURL(file)
+  coverPhotoFile.value = file
 }
 
 onMounted(() => {
