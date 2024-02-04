@@ -3,35 +3,66 @@
     <template #form>
       <form @submit.prevent="submit" class="space-y-6" action="#" method="POST">
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">Email
-            address</label>
+          <label
+            for="email"
+            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+            >Email address</label
+          >
           <div class="mt-2">
-            <input id="email" name="email" type="email" autocomplete="email" required
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              v-model="email" :class="{ 'input-error': errors.includes('email') }"
-              @input="errors.includes('email') && errors.splice(errors.indexOf('email'), 1)" />
+              placeholder="Enter your email address"
+              v-model="email"
+              :class="{ 'input-error': errors.includes('email') }"
+              @input="errors.includes('email') && errors.splice(errors.indexOf('email'), 1)"
+            />
           </div>
         </div>
 
         <div>
           <div class="flex items-center justify-between">
-            <label for="password"
-              class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">Password</label>
+            <label
+              for="password"
+              class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+              >Password</label
+            >
             <div class="text-sm">
-              <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+              <button
+                type="button"
+                @click="handleResetPassword"
+                class="font-semibold text-indigo-600 hover:text-indigo-500"
+              >
+                Forgot password?
+              </button>
             </div>
           </div>
           <div class="mt-2">
-            <input id="password" name="password" type="password" autocomplete="current-password" required
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              :class="{ 'input-error': errors.includes('password') }" v-model="password"
-              @input="errors.includes('password') && errors.splice(errors.indexOf('password'), 1)">
+              :class="{ 'input-error': errors.includes('password') }"
+              placeholder="Enter your password"
+              v-model="password"
+              @input="errors.includes('password') && errors.splice(errors.indexOf('password'), 1)"
+            />
           </div>
         </div>
 
         <div>
-          <button type="submit"
-            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          <button
+            type="submit"
+            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            :disabled="isLoading"
+          >
             Sign in
           </button>
         </div>
@@ -41,8 +72,11 @@
     <template #bottom>
       <p class="mt-10 text-center text-sm text-gray-500">
         Not a member?
-        <router-link to="register" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Create an
-          account</router-link>
+        <router-link
+          to="register"
+          class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+          >Create an account</router-link
+        >
       </p>
     </template>
   </AuthLayout>
@@ -102,6 +136,15 @@ const submit = async () => {
     }
 
     errors.value.push(...['email', 'password'])
+  }
+}
+
+const handleResetPassword = async () => {
+  try {
+    router.push('forgot-password')
+  } catch (error) {
+    console.error('Error fetching data:', error)
+    toast.error('An unknown error occurred. Please try again.')
   }
 }
 </script>
