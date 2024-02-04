@@ -17,13 +17,17 @@
         </button>
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Product</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Features</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Marketplace</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Company</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">Product</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">Features</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">Marketplace</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">Company</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <router-link to="login" class="text-sm font-semibold leading-6 text-gray-900">Log in <span
+        <div class="pe-2 pt-1 cursor-pointer">
+          <Icon v-if="darkMode" icon="material-symbols:mode-night" @click="toggleDarkMode"/>
+          <Icon v-else icon="material-symbols:light-mode" @click="toggleDarkMode"/>
+        </div>
+        <router-link to="login" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">Log in <span
             aria-hidden="true">&rarr;</span></router-link>
       </div>
     </nav>
@@ -69,3 +73,16 @@
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import useThemeStorage from '@/stores/ThemeStorage';
+import { Icon } from '@iconify/vue/dist/iconify.js';
+import { computed } from 'vue';
+
+const { toggleDarkMode } = useThemeStorage();
+const darkMode = computed({
+  get() { return useThemeStorage().darkMode },
+  set(val) { useThemeStorage().darkMode = val }
+})
+
+</script>

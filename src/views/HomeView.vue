@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="bg-white">
+  <div class="bg-white dark:bg-slate-900">
     <HomeHeader />
 
     <div class="relative isolate px-6 pt-14 lg:px-8">
@@ -37,7 +37,11 @@
       <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
         <div class="hidden sm:mb-8 sm:flex sm:justify-center" v-motion-fade>
           <div
-            class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20"
+            class="
+              relative rounded-full px-3 py-1 text-sm leading-6
+              text-gray-600 dark:text-gray-400
+              ring-1 ring-gray-900/10 dark:ring-gray-400/10 hover:ring-gray-900/20 dark:hover:ring-gray-400/20
+            "
           >
             Announcing our next round of funding.
             <a href="#" class="font-semibold text-indigo-600">
@@ -48,7 +52,7 @@
         </div>
         <div class="text-center">
           <h1
-            class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
+            class="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-6xl"
             v-motion
             :initial="{
               opacity: 0,
@@ -67,7 +71,7 @@
           >
             Data to enrich your online business
           </h1>
-          <p class="mt-6 text-lg leading-8 text-gray-600" v-motion-fade>
+          <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400" v-motion-fade>
             Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat
             commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.
           </p>
@@ -78,7 +82,7 @@
               >Get started</router-link
             >
 
-            <a href="#" class="text-sm font-semibold leading-6 text-gray-900"
+            <a href="#" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200"
               >Learn more <span aria-hidden="true">→</span></a
             >
           </div>

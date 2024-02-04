@@ -11,4 +11,5 @@ export default {
     require("daisyui"),
     require('@tailwindcss/forms'),
   ],
+  darkMode: 'class',
 }
