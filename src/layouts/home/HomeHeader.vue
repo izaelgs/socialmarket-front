@@ -24,8 +24,8 @@
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
         <div class="pe-2 pt-1 cursor-pointer text-gray-900 dark:text-gray-100">
-          <Icon v-if="darkMode" icon="material-symbols:mode-night" @click="toggleDarkMode"/>
-          <Icon v-else icon="material-symbols:light-mode" @click="toggleDarkMode"/>
+          <Icon v-if="darkMode" icon="material-symbols:light-mode" @click="toggleDarkMode"/>
+          <Icon v-else icon="material-symbols:mode-night" @click="toggleDarkMode"/>
         </div>
         <router-link to="login" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">Log in <span
             aria-hidden="true">&rarr;</span></router-link>
