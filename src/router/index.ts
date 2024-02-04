@@ -17,7 +17,7 @@ const router = createRouter({
         {
           path: 'edit-profile',
           name: 'Edit Profile',
-          component: () => import('../views/dashboard/EditProfileView.vue'),
+          component: () => import('../views/dashboard/EditProfileView/EditProfileView.vue'),
         }
       ],
       beforeEnter: Guard.auth

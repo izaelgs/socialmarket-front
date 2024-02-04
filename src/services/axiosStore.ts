@@ -81,5 +81,22 @@ export const useAxiosStore = defineStore({
         throw error;
       }
     },
+
+    async delete<T>(url: string, config = {}): Promise<T> {
+      try {
+        const response: AxiosResponse<T> = await this.axiosInstance.delete(url, config);
+        return response.data;
+      } catch (error: any) {
+        if(error instanceof AxiosError) {
+          if(error.response?.status === 403) {
+            window.location.href = '/login';
+          }
+
+          if(error.response) throw error.response.data;
+        }
+
+        throw error;
+      }
+    },
   },
 });
