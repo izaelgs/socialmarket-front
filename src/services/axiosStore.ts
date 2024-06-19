@@ -1,4 +1,3 @@
-// src/services/axiosStore.ts
 import axios, { AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
 
@@ -25,15 +24,7 @@ export const useAxiosStore = defineStore({
         const response: AxiosResponse<T> = await this.axiosInstance.get(url, config);
         return response.data;
       } catch (error: any) {
-
-        if(error instanceof AxiosError) {
-          if(error.response?.status === 403) {
-            window.location.href = '/login';
-          }
-
-          if(error.response) throw error.response.data;
-        }
-
+        this.handleAuthorizationError(error);
         throw error;
       }
     },
@@ -43,7 +34,8 @@ export const useAxiosStore = defineStore({
         const response: AxiosResponse<T> = await this.axiosInstance.post(url, data, config);
         return response.data;
       } catch (error: any) {
-        throw error.response.data;
+        this.handleAuthorizationError(error);
+        throw error;
       }
     },
 
@@ -52,15 +44,7 @@ export const useAxiosStore = defineStore({
         const response: AxiosResponse<T> = await this.axiosInstance.put(url, data, config);
         return response.data;
       } catch (error: any) {
-
-        if(error instanceof AxiosError) {
-          if(error.response?.status === 403) {
-            window.location.href = '/login';
-          }
-
-          if(error.response) throw error.response.data;
-        }
-
+        this.handleAuthorizationError(error);
         throw error;
       }
     },
@@ -70,14 +54,7 @@ export const useAxiosStore = defineStore({
         const response: AxiosResponse<T> = await this.axiosInstance.patch(url, data, config);
         return response.data;
       } catch (error: any) {
-        if(error instanceof AxiosError) {
-          if(error.response?.status === 403) {
-            window.location.href = '/login';
-          }
-
-          if(error.response) throw error.response.data;
-        }
-
+        this.handleAuthorizationError(error);
         throw error;
       }
     },
@@ -87,16 +64,21 @@ export const useAxiosStore = defineStore({
         const response: AxiosResponse<T> = await this.axiosInstance.delete(url, config);
         return response.data;
       } catch (error: any) {
-        if(error instanceof AxiosError) {
-          if(error.response?.status === 403) {
-            window.location.href = '/login';
-          }
-
-          if(error.response) throw error.response.data;
-        }
-
+        this.handleAuthorizationError(error);
         throw error;
       }
+    },
+
+    handleAuthorizationError(error: any) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          window.location.href = '/login';
+        }
+
+        if (error.response) throw error.response.data;
+      }
+
+      throw error;
     },
   },
 });

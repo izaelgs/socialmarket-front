@@ -15,7 +15,7 @@
             <div class="mt-2">
               <div
                 class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-600 focus-within:ring-1 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">workcation.com/</span>
+                <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">socialmarket.iza.dev.br/</span>
                 <input type="text" name="username" v-model="user.username" id="username" autocomplete="username"
                   class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-light-900 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="janesmith" />

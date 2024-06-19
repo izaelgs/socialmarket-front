@@ -10,14 +10,14 @@ const router = createRouter({
       component: () => import('../views/DashboardView.vue'),
       children: [
         {
-          path: './',
+          path: '',
           name: 'Home',
-          component: () => import('../views/dashboard/HomeView.vue'),
+          component: () => import('../views/dashboard/HomeView/IndexComponent.vue'),
         },
         {
           path: 'edit-profile',
           name: 'Edit Profile',
-          component: () => import('../views/dashboard/EditProfileView/EditProfileView.vue'),
+          component: () => import('../views/dashboard/EditProfileView/IndexComponent.vue'),
         }
       ],
       beforeEnter: Guard.auth
