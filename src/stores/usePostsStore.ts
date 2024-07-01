@@ -69,7 +69,7 @@ export const usePostsStore = defineStore('posts', () => {
 
     const data = await axios.patch<Post>('post/' + updatedPost.id, updatedPost, {
       headers: {
-        'content-type': 'multipart/form-data'
+        'Content-Type': 'application/json; charset=utf-8'
       }
     })
 
@@ -78,7 +78,9 @@ export const usePostsStore = defineStore('posts', () => {
     }
   }
 
-  const removePost = (postId: number) => {
+  const removePost = async (postId: number) => {
+    await axios.delete<Post>('post/' + postId)
+
     posts.value = posts.value.filter(post => post.id !== postId)
   }
 

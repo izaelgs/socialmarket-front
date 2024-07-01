@@ -33,13 +33,13 @@
                 </div>
               </div>
               <div class="relative">
-                <button @click="() => toggleMenu()" class="focus:outline-none">
+                <button @click="toggleMenu" class="focus:outline-none">
                   <Icon icon="mdi:dots-vertical" class="h-6 w-6 text-gray-700" />
                 </button>
                 <div
                   v-if="menuOpen"
                   class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20"
-                  @mouseleave="() => toggleMenu(false)"
+                  @mouseleave="toggleMenu(false)"
                 >
                   <ul class="py-1">
                     <template v-if="user.username === props.post.user.username">
@@ -57,7 +57,7 @@
                       </li>
                       <li>
                         <button
-                          @click="deletePost"
+                          @click="showDeleteModal"
                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                         >
                           <Icon icon="bi:trash" class="inline-block rounded-full ring-white mr-2" />
@@ -108,6 +108,8 @@
         </div>
       </div>
     </div>
+
+    <DeleteConfirmationModal :show="showModal" @confirm="confirmDelete" @cancel="closeModal" :isDeleting="isDeleting" />
   </div>
 </template>
 
@@ -116,6 +118,7 @@ import { defineProps, ref, onMounted } from 'vue'
 import { usePostsStore, type Post } from '@/stores/usePostsStore'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
+import DeleteConfirmationModal from './DeleteConfirmationModal.vue'
 import { useUserStore } from '@/services/userStore'
 
 const props = defineProps<{
@@ -130,6 +133,8 @@ const menuOpen = ref(false)
 const editMode = ref(false)
 const editedContent = ref(props.post.content)
 const isSaving = ref<boolean>(false)
+const showModal = ref(false)
+const isDeleting = ref<boolean>(false)
 
 const toggleMenu = (shouldBeOpened?: boolean) => {
   menuOpen.value = shouldBeOpened ?? !menuOpen.value
@@ -151,7 +156,7 @@ const submitEdit = async () => {
     isSaving.value = false
     editMode.value = false
   } catch (error) {
-    console.error(error);
+    console.error(error)
     isSaving.value = false
   }
 }
@@ -160,9 +165,26 @@ const cancelEdit = () => {
   editMode.value = false
 }
 
-const deletePost = () => {
-  // Lógica para excluir o post
-  console.log('Delete post:', props.post.id)
+const showDeleteModal = () => {
+  showModal.value = true
+  menuOpen.value = false
+}
+
+const closeModal = () => {
+  showModal.value = false
+}
+
+const confirmDelete = async () => {
+  try {
+    isDeleting.value = true
+    await postsStore.removePost(props.post.id)
+    closeModal()
+    isDeleting.value = false
+    console.log('Post deleted:', props.post.id)
+  } catch (error) {
+    console.error('Error deleting post:', error)
+    isDeleting.value = false
+  }
 }
 
 onMounted(() => {
