@@ -33,7 +33,7 @@
                 </div>
               </div>
               <div class="relative">
-                <button @click="toggleMenu" class="focus:outline-none">
+                <button @click="() => toggleMenu()" class="focus:outline-none">
                   <Icon icon="mdi:dots-vertical" class="h-6 w-6 text-gray-700" />
                 </button>
                 <div
