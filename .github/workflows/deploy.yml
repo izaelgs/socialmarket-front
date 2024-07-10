@@ -3,58 +3,34 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # Defina o branch que irá acionar o deploy
+      - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'  # Certifique-se de usar a versão do Node.js compatível com seu projeto
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Build project
-      run: npm run build
-
-    - name: Upload production-ready build files
-      uses: actions/upload-artifact@v2
-      with:
-        name: dist
-        path: dist
-
   deploy:
     runs-on: ubuntu-latest
-    needs: build
 
     steps:
-    - name: Download build files
-      uses: actions/download-artifact@v2
-      with:
-        name: dist
-        path: dist
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Copy files to EC2
-      uses: appleboy/scp-action@v0.1.0
-      with:
-        host: ${{ secrets.EC2_INSTANCE_IP }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "dist/*"
-        target: "/home/ubuntu/socialmarket-front/dist"
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
-    - name: Restart Nginx
-      uses: appleboy/ssh-action@v0.1.0
-      with:
-        host: ${{ secrets.EC2_INSTANCE_IP }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          sudo systemctl restart nginx
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_USER: ubuntu
+          EC2_HOST: 18.228.228.186
+        run: |
+          echo "${{ secrets.PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          rsync -avz -e "ssh -i private_key.pem -o StrictHostKeyChecking=no" ./dist $EC2_USER@$EC2_HOST:/home/ubuntu/socialmarket-front/
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "cd /home/ubuntu/socialmarket-front && npm install && sudo systemctl restart nginx"
