@@ -9,7 +9,7 @@ export const useAxiosStore = defineStore({
   id: 'axiosStore',
   state: (): AxiosStoreState => ({
     axiosInstance: axios.create({
-      baseURL: import.meta.env.VITE_BASE_URL,
+      baseURL: import.meta.env.VITE_API_BASE_URL,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
