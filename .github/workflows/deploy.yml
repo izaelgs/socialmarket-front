@@ -28,7 +28,7 @@ jobs:
         env:
           PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           EC2_USER: ubuntu
-          EC2_HOST: 18.228.228.186
+          EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
           echo "${{ secrets.PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
