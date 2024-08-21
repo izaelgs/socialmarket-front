@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col justify-center w-full border rounded-lg shadow p-4 pt-2 mb-8 dark:border-gray-700"
+    :class="`flex flex-col justify-center w-full p-4 ${!isComment ? 'border rounded-lg shadow dark:border-gray-700 mb-8 pt-2' : 'pt-0'}`"
   >
     <div class="space-y-12">
       <!-- Post Card -->
@@ -69,6 +69,7 @@
                 </div>
               </div>
             </div>
+
             <template v-if="editMode">
               <textarea
                 v-model="editedContent"
@@ -90,8 +91,10 @@
                 </button>
               </div>
             </template>
+
             <template v-else>
               <p>{{ props.post.content }}</p>
+
               <div class="relative w-full h-auto mt-2 min-h-20">
                 <SpinnerComponent v-if="imageLoading" class="absolute inset-0 m-auto" />
                 <img
@@ -103,13 +106,48 @@
                   @error="imageLoading = false"
                 />
               </div>
+
+              <ul>
+                <li v-for="post in post.comments" :key="post.id">
+                  <PostCard :post="post" isComment />
+                </li>
+              </ul>
+
+              <form @submit.prevent="submitComment" class="flex gap-2" v-if="!isComment">
+                <textarea
+                  id="content"
+                  name="content"
+                  v-model="comment.content"
+                  rows="1"
+                  ref="contentTextarea"
+                  placeholder="Leave a comment"
+                  class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset dark:ring-gray-600 ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  @input="adjustTextareaHeight"
+                ></textarea>
+
+                <button
+                  type="submit"
+                  class="rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  :class="isCreatingComment ? 'cursor-not-allowed' : 'cursor-pointer'"
+                  :disabled="isCreatingComment"
+                >
+                  <template v-if="isCreatingComment"><SpinnerComponent class="p-1" /></template>
+                  <template v-else>Post</template>
+                </button>
+              </form>
             </template>
           </div>
         </div>
       </div>
     </div>
 
-    <DeleteConfirmationModal :show="showModal" @confirm="confirmDelete" @cancel="closeModal" :isDeleting="isDeleting" />
+    <DeleteConfirmationModal
+      :show="showModal"
+      @confirm="confirmDelete"
+      @cancel="closeModal"
+      :isDeleting="isDeleting"
+      :isComment="isComment"
+    />
   </div>
 </template>
 
@@ -120,21 +158,41 @@ import { Icon } from '@iconify/vue/dist/iconify.js'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
 import DeleteConfirmationModal from './DeleteConfirmationModal.vue'
 import { useUserStore } from '@/services/userStore'
+import { toast } from 'vue3-toastify'
+import type { UserState } from '@/services/types/auth'
+import { AxiosError } from 'axios'
+
+interface Comment {
+  content?: string
+  imageUrl?: string
+  image?: File
+  referencePostId?: string
+}
 
 const props = defineProps<{
-  post: Post
+  post: Post,
+  isComment?: boolean;
 }>()
 
 const user = useUserStore()
 const postsStore = usePostsStore()
 
-const imageLoading = ref(true)
-const menuOpen = ref(false)
-const editMode = ref(false)
 const editedContent = ref(props.post.content)
+const comment = ref<Comment>({
+  content: '',
+  imageUrl: '',
+  referencePostId: props.post.id.toString(),
+})
+
+const imageLoading = ref<boolean>(true)
+const menuOpen = ref<boolean>(false)
+const editMode = ref<boolean>(false)
 const isSaving = ref<boolean>(false)
-const showModal = ref(false)
+const showModal = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
+const isCreatingComment = ref<boolean>(false)
+
+const contentTextarea = ref<HTMLTextAreaElement>()
 
 const toggleMenu = (shouldBeOpened?: boolean) => {
   menuOpen.value = shouldBeOpened ?? !menuOpen.value
@@ -163,6 +221,42 @@ const submitEdit = async () => {
 
 const cancelEdit = () => {
   editMode.value = false
+}
+
+const submitComment = async () => {
+  if (!comment.value.content) {
+    toast.error('Comment content cannot be empty.')
+    return
+  }
+
+  try {
+    isCreatingComment.value = true
+    await postsStore.addComment(props.post, comment.value, user as UserState)
+    isCreatingComment.value = false
+    handleCleanCommentData()
+
+    toast.success('Comment created successfully.')
+  } catch (error: any) {
+    isCreatingComment.value = false
+    console.error('Error creating comment:', error)
+
+    if (error instanceof AxiosError) {
+      if (error.response?.data.message) return toast.error(error.response.data.message)
+    }
+
+    toast.error('Error creating comment. Please try again later.')
+  }
+}
+
+const handleCleanCommentData = () => {
+  comment.value.content = ''
+  comment.value.imageUrl = ''
+}
+
+const adjustTextareaHeight = () => {
+  const textarea = contentTextarea.value as HTMLTextAreaElement
+  textarea.style.height = 'auto'
+  textarea.style.height = `${textarea.scrollHeight}px`
 }
 
 const showDeleteModal = () => {

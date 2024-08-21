@@ -13,6 +13,8 @@ export interface Post {
   createdAt?: string
   updatedAt?: string
   user: UserState
+
+  comments: Post[]
 }
 
 export const usePostsStore = defineStore('posts', () => {
@@ -61,7 +63,38 @@ export const usePostsStore = defineStore('posts', () => {
       }
     })
 
-    posts.value.unshift({...data, user})
+    posts.value.unshift({ ...data, user })
+  }
+
+  const addComment = async (post: Post, comment: {
+    content?: string
+    imageUrl?: string
+    image?: File
+    referencePostId?: string
+  }, user: UserState) => {
+    const index = posts.value.findIndex(p => p.id === post.id)
+
+    const form = new FormData()
+
+    Object.entries(comment).forEach(([key, value]) => {
+      if (value) {
+        if (key === 'referencePostId' && typeof value === 'string') {
+          form.append(key, parseInt(value).toString())
+        } else {
+          form.append(key, value)
+        }
+      }
+    })
+
+    const data = await axios.post<Post>('post', form, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    })
+
+    if (index !== -1) {
+      posts.value[index] = { ...posts.value[index], comments: [...posts.value[index].comments, { ...data, user }] }
+    }
   }
 
   const updatePost = async (updatedPost: Partial<Post> & { id: number }) => {
@@ -74,14 +107,32 @@ export const usePostsStore = defineStore('posts', () => {
     })
 
     if (index !== -1) {
-      posts.value[index] = {...posts.value[index], ...data}
+      posts.value[index] = { ...posts.value[index], ...data }
     }
   }
 
   const removePost = async (postId: number) => {
-    await axios.delete<Post>('post/' + postId)
+    await axios.delete<Post>('post/' + postId);
 
-    posts.value = posts.value.filter(post => post.id !== postId)
+    posts.value = posts.value
+      .map(post => deletePostComment(post, postId))
+      .filter(post => post !== null);
+  }
+
+  const deletePostComment = (post: Post, postId: number): Post | null => {
+    // Caso base: se o post é o que deve ser removido, retorna null
+    if (post.id === postId) {
+      return null;
+    }
+
+    // Recursão: busca e remove o comentário dentro dos comentários do post
+    if (post.comments && post.comments.length > 0) {
+      post.comments = post.comments
+        .map(comment => deletePostComment(comment, postId))
+        .filter(comment => comment !== null);
+    }
+
+    return post;
   }
 
   return {
@@ -90,6 +141,7 @@ export const usePostsStore = defineStore('posts', () => {
     error,
     fetchPosts,
     addPost,
+    addComment,
     updatePost,
     removePost,
   }
