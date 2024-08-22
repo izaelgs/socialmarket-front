@@ -31,6 +31,6 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
-          chmod 600 private_key.pem
-          rsync -avz -e "ssh -i private_key.pem -o StrictHostKeyChecking=no" ./dist $EC2_USER@$EC2_HOST:/home/ubuntu/socialmarket-front/
-          ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "cd /home/ubuntu/socialmarket-front && npm install && sudo systemctl restart nginx"
+          sudo chmod 600 private_key.pem
+          sudo rsync -avz -e "ssh -i private_key.pem -o StrictHostKeyChecking=no" ./dist $EC2_USER@$EC2_HOST:/home/ubuntu/socialmarket-front/
+          sudo ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "cd /home/ubuntu/socialmarket-front && npm install && sudo systemctl restart nginx"
