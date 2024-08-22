@@ -63,17 +63,15 @@ export const usePostsStore = defineStore('posts', () => {
       }
     })
 
-    posts.value.unshift({ ...data, user })
+    posts.value.unshift({ ...data, user, comments: [] })
   }
 
-  const addComment = async (post: Post, comment: {
+  const addComment = async (comment: {
     content?: string
     imageUrl?: string
     image?: File
     referencePostId?: string
   }, user: UserState) => {
-    const index = posts.value.findIndex(p => p.id === post.id)
-
     const form = new FormData()
 
     Object.entries(comment).forEach(([key, value]) => {
@@ -92,9 +90,8 @@ export const usePostsStore = defineStore('posts', () => {
       }
     })
 
-    if (index !== -1) {
-      posts.value[index] = { ...posts.value[index], comments: [...posts.value[index].comments, { ...data, user }] }
-    }
+    posts.value = posts.value
+      .map(post => addPostComment(post, { ...data, user, comments: [] }));
   }
 
   const updatePost = async (updatedPost: Partial<Post> & { id: number }) => {
@@ -108,6 +105,27 @@ export const usePostsStore = defineStore('posts', () => {
       .map(post => updatePostComment(post, data));
   }
 
+  const removePost = async (postId: number) => {
+    await axios.delete<Post>('post/' + postId);
+
+    posts.value = posts.value.filter(post => post.id !== postId)
+      .map(post => deletePostComment(post, postId))
+      .filter(post => post !== null);
+  }
+
+  const addPostComment = (post: Post, addedPost: Post): Post => {
+    if (post.id == addedPost.referencePostId) {
+      return { ...post, comments: [...post.comments, { ...addedPost }] }
+    }
+
+    if (post.comments && post.comments.length > 0) {
+      post.comments = post.comments
+        .map(comment => addPostComment(comment, addedPost))
+    }
+
+    return post;
+  }
+
   const updatePostComment = (post: Post, updatedPost: Post): Post => {
     if (post.id === updatedPost.id) {
       return { ...post, ...updatedPost };
@@ -119,14 +137,6 @@ export const usePostsStore = defineStore('posts', () => {
     }
 
     return post;
-  }
-
-  const removePost = async (postId: number) => {
-    await axios.delete<Post>('post/' + postId);
-
-    posts.value = posts.value
-      .map(post => deletePostComment(post, postId))
-      .filter(post => post !== null);
   }
 
   const deletePostComment = (post: Post, postId: number): Post | null => {

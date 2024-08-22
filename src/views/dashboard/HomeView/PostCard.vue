@@ -95,7 +95,7 @@
             <template v-else>
               <p>{{ props.post.content }}</p>
 
-              <div class="relative w-full h-auto mt-2 min-h-20">
+              <div class="relative w-full h-auto mt-2 min-h-20" v-if="props.post.imageUrl">
                 <SpinnerComponent v-if="imageLoading" class="absolute inset-0 m-auto" />
                 <img
                   v-if="props.post.imageUrl"
@@ -113,7 +113,7 @@
                 </li>
               </ul>
 
-              <form @submit.prevent="submitComment" class="flex gap-2" v-if="!isComment">
+              <form @submit.prevent="submitComment" class="flex gap-2" v-if="!isComment || isCommenting">
                 <textarea
                   id="content"
                   name="content"
@@ -135,6 +135,25 @@
                   <template v-else>Post</template>
                 </button>
               </form>
+
+              <div class="flex gap-2">
+                <button
+                  type="button"
+                  @click="() => isCommenting = !isCommenting"
+                  v-if="isComment"
+                  class="text-sm font-semibold leading-6 text-light-900"
+                >
+                  {{isCommenting ? 'Cancel' : 'Reply'}}
+                </button>
+                <button
+                  type="button"
+                  @click="() => isCommenting = true"
+                  v-if="isComment"
+                  class="text-sm font-semibold leading-6 text-light-900"
+                >
+                  Like
+                </button>
+              </div>
             </template>
           </div>
         </div>
@@ -190,6 +209,7 @@ const editMode = ref<boolean>(false)
 const isSaving = ref<boolean>(false)
 const showModal = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
+const isCommenting = ref<boolean>(false)
 const isCreatingComment = ref<boolean>(false)
 
 const contentTextarea = ref<HTMLTextAreaElement>()
@@ -231,8 +251,9 @@ const submitComment = async () => {
 
   try {
     isCreatingComment.value = true
-    await postsStore.addComment(props.post, comment.value, user as UserState)
+    await postsStore.addComment(comment.value, user as UserState)
     isCreatingComment.value = false
+    isCommenting.value = false
     handleCleanCommentData()
 
     toast.success('Comment created successfully.')
@@ -274,7 +295,6 @@ const confirmDelete = async () => {
     await postsStore.removePost(props.post.id)
     closeModal()
     isDeleting.value = false
-    console.log('Post deleted:', props.post.id)
   } catch (error) {
     console.error('Error deleting post:', error)
     isDeleting.value = false
