@@ -19,4 +19,29 @@
     text-xs font-bold
     transition-all duration-100 scale-0 origin-left
   }
+
+  /* Scrollbar Styles */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-minimal {
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @apply bg-slate-900 rounded
+    }
+
+    &::-webkit-scrollbar-track {
+      @apply bg-green-900
+    }
+  }
 }

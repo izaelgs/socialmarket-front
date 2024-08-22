@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="`flex flex-col justify-center w-full p-4 ${!isComment ? 'border rounded-lg shadow dark:border-gray-700 mb-8 pt-2' : 'pt-0'}`"
+    :class="`flex flex-col justify-center w-full p-4 ${!isComment ? 'border rounded-lg shadow dark:border-gray-700 mb-8 pt-2' : 'py-0'}`"
   >
     <div class="space-y-12">
       <!-- Post Card -->
@@ -74,7 +74,7 @@
               <textarea
                 v-model="editedContent"
                 rows="4"
-                class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset dark:ring-gray-600 ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset dark:ring-gray-600 ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               ></textarea>
               <div class="flex items-center justify-end gap-x-6">
                 <button @click="cancelEdit" class="text-sm font-semibold leading-6 text-light-900">
@@ -82,7 +82,7 @@
                 </button>
                 <button
                   @click="submitEdit"
-                  class="rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  class="rounded-md bg-green-600 px-5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
                   :class="isSaving ? 'cursor-not-allowed' : 'cursor-pointer'"
                   :disabled="isSaving"
                 >
@@ -95,7 +95,7 @@
             <template v-else>
               <p>{{ props.post.content }}</p>
 
-              <div class="relative w-full h-auto mt-2 min-h-20" v-if="props.post.imageUrl">
+              <div class="relative w-full h-auto mt-2 min-h-20 mb-2" v-if="props.post.imageUrl">
                 <SpinnerComponent v-if="imageLoading" class="absolute inset-0 m-auto" />
                 <img
                   v-if="props.post.imageUrl"
@@ -113,7 +113,7 @@
                 </li>
               </ul>
 
-              <form @submit.prevent="submitComment" class="flex gap-2" v-if="!isComment || isCommenting">
+              <form @submit.prevent="submitComment" class="flex gap-2 mt-2" v-if="!isComment || isCommenting">
                 <textarea
                   id="content"
                   name="content"
@@ -121,13 +121,13 @@
                   rows="1"
                   ref="contentTextarea"
                   placeholder="Leave a comment"
-                  class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset dark:ring-gray-600 ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset dark:ring-gray-600 ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
                   @input="adjustTextareaHeight"
                 ></textarea>
 
                 <button
                   type="submit"
-                  class="rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  class="rounded-md bg-green-600 px-5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
                   :class="isCreatingComment ? 'cursor-not-allowed' : 'cursor-pointer'"
                   :disabled="isCreatingComment"
                 >
@@ -136,7 +136,7 @@
                 </button>
               </form>
 
-              <div class="flex gap-2">
+              <div class="flex gap-2 mb-2">
                 <button
                   type="button"
                   @click="() => isCommenting = !isCommenting"

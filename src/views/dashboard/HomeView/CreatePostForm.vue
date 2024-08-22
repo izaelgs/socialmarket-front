@@ -29,13 +29,13 @@
               rows="1"
               ref="contentTextarea"
               placeholder="What's on your mind?"
-              class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset dark:ring-gray-600 ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset dark:ring-gray-600 ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               @input="adjustTextareaHeight"
             ></textarea>
           </div>
         </div>
 
-        <!-- Cover Photo -->
+        <!-- Image -->
         <div class="col-span-full" v-show="uploadImageEnabled">
           <label
             for="cover_photo"
@@ -50,7 +50,7 @@
             "
           >
             <div
-              class="text-center absolute w-full h-full flex flex-col items-center justify-center"
+              :class="`text-center absolute w-full h-full flex flex-col items-center justify-center ${previewImageUrl ? 'opacity-0' : ''}`"
             >
               <svg
                 class="mx-auto h-12 w-12 text-gray-300"
@@ -66,7 +66,7 @@
               </svg>
               <div class="mt-4 flex text-sm leading-6 text-gray-600">
                 <span
-                  class="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                  class="relative cursor-pointer rounded-md font-semibold text-green-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-600 focus-within:ring-offset-2 hover:text-green-500"
                 >
                   <span>Upload a file</span>
                 </span>
@@ -88,7 +88,7 @@
           <Icon
             icon="bi:card-image"
             @click="handleToggleUploadImage"
-            :class="`cursor-pointer ${uploadImageEnabled ? 'text-indigo-600' : null}`"
+            :class="`cursor-pointer ${uploadImageEnabled ? 'text-green-600' : null}`"
           />
 
           <div class="flex items-center justify-end gap-x-6">
@@ -96,12 +96,13 @@
               type="button"
               @click="handleCleanPostData"
               class="text-sm font-semibold leading-6 text-light-900"
+              v-if="post.content || post.imageUrl || previewImageUrl"
             >
               Cancel
             </button>
             <button
               type="submit"
-              class="rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              class="rounded-md bg-green-600 px-5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
               :class="isCreating ? 'cursor-not-allowed' : 'cursor-pointer'"
               :disabled="isCreating"
             >

@@ -15,7 +15,7 @@
               type="email"
               autocomplete="email"
               required
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               placeholder="Enter your email address"
               v-model="email"
               :class="{ 'input-error': errors.includes('email') }"
@@ -35,7 +35,7 @@
               <button
                 type="button"
                 @click="handleResetPassword"
-                class="font-semibold text-indigo-600 hover:text-indigo-500"
+                class="font-semibold text-green-600 hover:text-green-500"
               >
                 Forgot password?
               </button>
@@ -48,7 +48,7 @@
               type="password"
               autocomplete="current-password"
               required
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               :class="{ 'input-error': errors.includes('password') }"
               placeholder="Enter your password"
               v-model="password"
@@ -60,7 +60,7 @@
         <div>
           <button
             type="submit"
-            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            class="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
             :disabled="isLoading"
           >
             Sign in
@@ -74,7 +74,7 @@
         Not a member?
         <router-link
           to="register"
-          class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+          class="font-semibold leading-6 text-green-600 hover:text-green-500"
           >Create an account</router-link
         >
       </p>
