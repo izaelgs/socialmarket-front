@@ -1,6 +1,8 @@
 <template>
   <div
-    :class="`flex flex-col justify-center w-full p-4 ${!isComment ? 'border rounded-lg shadow dark:border-gray-700 mb-8 pt-2' : 'py-0'}`"
+    :class="`flex flex-col justify-center w-full p-4 ${
+      !isComment ? 'border rounded-lg shadow dark:border-gray-700 mb-8 pt-2' : 'py-0'
+    }`"
   >
     <div class="space-y-12">
       <!-- Post Card -->
@@ -76,10 +78,12 @@
                 rows="4"
                 class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset dark:ring-gray-600 ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               ></textarea>
-              <div class="flex items-center justify-end gap-x-6">
+
+              <div class="flex items-center justify-end gap-x-6 mt-2">
                 <button @click="cancelEdit" class="text-sm font-semibold leading-6 text-light-900">
                   Cancel
                 </button>
+
                 <button
                   @click="submitEdit"
                   class="rounded-md bg-green-600 px-5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
@@ -101,19 +105,28 @@
                   v-if="props.post.imageUrl"
                   :src="props.post.imageUrl"
                   alt="Post Image"
-                  class="w-full h-auto mt-2 rounded max-h-96 object-cover"
+                  class="w-full h-auto mt-2 rounded max-h-96 object-cover cursor-pointer"
                   @load="imageLoading = false"
                   @error="imageLoading = false"
+                  @click="openImagePreviewModal"
                 />
               </div>
 
-              <ul>
-                <li v-for="post in post.comments" :key="post.id">
-                  <PostCard :post="post" isComment />
+              <ul v-if="post.comments && showComments">
+                <li v-for="comment in post.comments" :key="comment.id">
+                  <PostCard :post="comment" isComment />
                 </li>
               </ul>
 
-              <form @submit.prevent="submitComment" class="flex gap-2 mt-2" v-if="!isComment || isCommenting">
+              <button @click="showComments = !showComments" v-if="post.comments.length" class="text-xs font-semibold leading-6 text-light-900">
+                {{ showComments ? 'Hide Comments' : `Show ${post.comments.length} Comment${post.comments.length > 1 ? 's' : ''}` }}
+              </button>
+
+              <form
+                @submit.prevent="submitComment"
+                class="flex gap-2 mt-2"
+                v-if="!isComment || isCommenting"
+              >
                 <textarea
                   id="content"
                   name="content"
@@ -139,15 +152,15 @@
               <div class="flex gap-2 mb-2">
                 <button
                   type="button"
-                  @click="() => isCommenting = !isCommenting"
+                  @click="() => (isCommenting = !isCommenting)"
                   v-if="isComment"
                   class="text-sm font-semibold leading-6 text-light-900"
                 >
-                  {{isCommenting ? 'Cancel' : 'Reply'}}
+                  {{ isCommenting ? 'Cancel' : 'Reply' }}
                 </button>
                 <button
                   type="button"
-                  @click="() => isCommenting = true"
+                  @click="() => (isCommenting = true)"
                   v-if="isComment"
                   class="text-sm font-semibold leading-6 text-light-900"
                 >
@@ -160,10 +173,30 @@
       </div>
     </div>
 
+    <!-- Modal Preview -->
+    <div
+      v-if="showImagePreviewModal"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50 max-h-screen overflow-auto scrollbar-minimal"
+      @click="showImagePreviewModal = false"
+    >
+      <div class="relative bg-white rounded shadow-lg max-w-2xl" @click.stop>
+        <button
+          @click="showImagePreviewModal = false"
+          class="absolute top-0 right-0 mt-2 mr-2 text-white "
+        >
+          <Icon
+            icon="material-symbols:close"
+            class="h-6 w-6"
+          />
+        </button>
+        <img :src="post.imageUrl" alt="Preview Image" class="object-cover" />
+      </div>
+    </div>
+
     <DeleteConfirmationModal
-      :show="showModal"
+      :show="showDeleteConfirmationModal"
       @confirm="confirmDelete"
-      @cancel="closeModal"
+      @cancel="closeDeleteConfirmationModal"
       :isDeleting="isDeleting"
       :isComment="isComment"
     />
@@ -189,8 +222,8 @@ interface Comment {
 }
 
 const props = defineProps<{
-  post: Post,
-  isComment?: boolean;
+  post: Post
+  isComment?: boolean
 }>()
 
 const user = useUserStore()
@@ -200,14 +233,18 @@ const editedContent = ref(props.post.content)
 const comment = ref<Comment>({
   content: '',
   imageUrl: '',
-  referencePostId: props.post.id.toString(),
+  referencePostId: props.post.id.toString()
 })
 
 const imageLoading = ref<boolean>(true)
 const menuOpen = ref<boolean>(false)
 const editMode = ref<boolean>(false)
+
+const showDeleteConfirmationModal = ref<boolean>(false)
+const showImagePreviewModal = ref(false)
+const showComments = ref(false)
+
 const isSaving = ref<boolean>(false)
-const showModal = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
 const isCommenting = ref<boolean>(false)
 const isCreatingComment = ref<boolean>(false)
@@ -281,24 +318,28 @@ const adjustTextareaHeight = () => {
 }
 
 const showDeleteModal = () => {
-  showModal.value = true
+  showDeleteConfirmationModal.value = true
   menuOpen.value = false
 }
 
-const closeModal = () => {
-  showModal.value = false
+const closeDeleteConfirmationModal = () => {
+  showDeleteConfirmationModal.value = false
 }
 
 const confirmDelete = async () => {
   try {
     isDeleting.value = true
     await postsStore.removePost(props.post.id)
-    closeModal()
+    closeDeleteConfirmationModal()
     isDeleting.value = false
   } catch (error) {
     console.error('Error deleting post:', error)
     isDeleting.value = false
   }
+}
+
+const openImagePreviewModal = () => {
+  showImagePreviewModal.value = true
 }
 
 onMounted(() => {

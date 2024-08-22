@@ -1,5 +1,5 @@
 <template>
-  <div :class="(darkMode ? 'dark' : null) + ' h-screen overflow-auto scrollbar-minimal'">
+  <div :class="(darkMode ? 'dark' : null) + ' h-screen overflow-hidden'">
     <RouterView />
   </div>
 </template>

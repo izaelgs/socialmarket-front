@@ -37,11 +37,11 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      @apply bg-slate-900 rounded
+      @apply dark:bg-green-900 bg-green-900 rounded
     }
 
     &::-webkit-scrollbar-track {
-      @apply bg-green-900
+      @apply dark:bg-slate-900 bg-white
     }
   }
 }
