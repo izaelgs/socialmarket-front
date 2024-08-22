@@ -28,7 +28,7 @@ export const useUserStore = defineStore({
       birthAt,
       name, // Adicione 'name' aos parâmetros da ação setUser
     }: User) {
-      if (id) this.id = id;
+      if (id) this.id = id.toString();
       this.username = username;
       this.email = email;
       this.about = about;

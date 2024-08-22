@@ -110,7 +110,7 @@ export const usePostsStore = defineStore('posts', () => {
 
     posts.value = posts.value.filter(post => post.id !== postId)
       .map(post => deletePostComment(post, postId))
-      .filter(post => post !== null);
+      .filter((post): post is Post => post !== null);
   }
 
   const addPostComment = (post: Post, addedPost: Post): Post => {
@@ -147,7 +147,7 @@ export const usePostsStore = defineStore('posts', () => {
     if (post.comments && post.comments.length > 0) {
       post.comments = post.comments
         .map(comment => deletePostComment(comment, postId))
-        .filter(comment => comment !== null);
+        .filter((post): post is Post => post !== null);
     }
 
     return post;
