@@ -152,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { usePostsStore, type Post } from '@/stores/usePostsStore'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'

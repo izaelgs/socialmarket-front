@@ -98,17 +98,27 @@ export const usePostsStore = defineStore('posts', () => {
   }
 
   const updatePost = async (updatedPost: Partial<Post> & { id: number }) => {
-    const index = posts.value.findIndex(post => post.id === updatedPost.id)
-
     const data = await axios.patch<Post>('post/' + updatedPost.id, updatedPost, {
       headers: {
         'Content-Type': 'application/json; charset=utf-8'
       }
     })
 
-    if (index !== -1) {
-      posts.value[index] = { ...posts.value[index], ...data }
+    posts.value = posts.value
+      .map(post => updatePostComment(post, data));
+  }
+
+  const updatePostComment = (post: Post, updatedPost: Post): Post => {
+    if (post.id === updatedPost.id) {
+      return { ...post, ...updatedPost };
     }
+
+    if (post.comments && post.comments.length > 0) {
+      post.comments = post.comments
+        .map(comment => updatePostComment(comment, updatedPost))
+    }
+
+    return post;
   }
 
   const removePost = async (postId: number) => {
@@ -120,12 +130,10 @@ export const usePostsStore = defineStore('posts', () => {
   }
 
   const deletePostComment = (post: Post, postId: number): Post | null => {
-    // Caso base: se o post é o que deve ser removido, retorna null
     if (post.id === postId) {
       return null;
     }
 
-    // Recursão: busca e remove o comentário dentro dos comentários do post
     if (post.comments && post.comments.length > 0) {
       post.comments = post.comments
         .map(comment => deletePostComment(comment, postId))

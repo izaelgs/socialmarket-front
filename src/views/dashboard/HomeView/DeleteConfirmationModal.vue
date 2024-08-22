@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, ref } from 'vue'
+import { defineEmits, ref } from 'vue'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
 
 const props = defineProps({
