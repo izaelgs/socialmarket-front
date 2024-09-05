@@ -86,51 +86,45 @@
       </div>
     </div>
 
-    <footer class="text-white">
+    <footer class="bg-slate-900 dark:bg-white text-white dark:text-black">
       <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-        <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+        <div class="xl:grid xl:grid-cols-2 xl:gap-8">
           <!-- Column 1: Contact Information -->
-          <div class="grid grid-cols-2 gap-8 xl:col-span-1">
-            <div>
-              <h2 class="text-lg font-medium tracking-wide">Contact</h2>
-              <ul class="mt-4 space-y-4">
-                <!-- <li>
+          <div>
+            <h2 class="text-lg font-medium tracking-wide">Contact</h2>
+            <ul class="mt-4 space-y-4">
+              <!-- <li>
                   <p class="text-base">Address: Main St, 123</p>
                 </li> -->
-                <li>
-                  <p class="text-base">Phone: +55 (27) 9 8812-6640</p>
-                </li>
-                <li>
-                  <p class="text-base">Email: izael.dev@gmail.com</p>
-                </li>
-              </ul>
-            </div>
+              <li>
+                <p class="text-base">Phone: +55 (27) 9 8812-6640</p>
+              </li>
+              <li>
+                <p class="text-base">Email: izael.dev@gmail.com</p>
+              </li>
+            </ul>
           </div>
 
           <!-- Column 2: Social Media Links -->
-          <div class="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
-            <div>
-              <h2 class="text-lg font-medium tracking-wide">Social Media</h2>
-              <ul class="mt-4 space-y-4">
-                <li>
-                  <a href="https://twitter.com/Izael65" class="text-base hover:text-gray-300"
-                    >Twitter</a
-                  >
-                </li>
-                <li>
-                  <a href="https://www.facebook.com/izael.gs" class="text-base hover:text-gray-300"
-                    >Facebook</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="https://www.instagram.com/izael_hs/"
-                    class="text-base hover:text-gray-300"
-                    >Instagram</a
-                  >
-                </li>
-              </ul>
-            </div>
+          <div>
+            <h2 class="text-lg font-medium tracking-wide">Social Media</h2>
+            <ul class="mt-4 space-y-4">
+              <li>
+                <a href="https://twitter.com/Izael65" class="text-base hover:text-gray-300"
+                  >Twitter</a
+                >
+              </li>
+              <li>
+                <a href="https://www.facebook.com/izael.gs" class="text-base hover:text-gray-300"
+                  >Facebook</a
+                >
+              </li>
+              <li>
+                <a href="https://www.instagram.com/izael_hs/" class="text-base hover:text-gray-300"
+                  >Instagram</a
+                >
+              </li>
+            </ul>
           </div>
         </div>
       </div>

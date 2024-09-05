@@ -205,7 +205,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { usePostsStore, type Post } from '@/stores/usePostsStore'
+import { usePostsStore, type Post } from '@/stores/PostsStore'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
 import DeleteConfirmationModal from './DeleteConfirmationModal.vue'

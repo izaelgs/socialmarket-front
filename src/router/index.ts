@@ -12,12 +12,17 @@ const router = createRouter({
         {
           path: '',
           name: 'Home',
-          component: () => import('../views/dashboard/HomeView/IndexComponent.vue'),
+          component: () => import('../views/dashboard/HomeView/Index.vue'),
         },
         {
           path: 'edit-profile',
           name: 'Edit Profile',
-          component: () => import('../views/dashboard/EditProfileView/IndexComponent.vue'),
+          component: () => import('../views/dashboard/EditProfileView/Index.vue'),
+        },
+        {
+          path: 'manage-stores',
+          name: 'Manage Stores',
+          component: () => import('../views/dashboard/Stores/Index.vue'),
         }
       ],
       beforeEnter: Guard.auth

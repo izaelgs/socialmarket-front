@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import CreatePostForm from './CreatePostForm.vue'
 import { onMounted } from 'vue'
-import { usePostsStore } from '@/stores/usePostsStore'
+import { usePostsStore } from '@/stores/PostsStore'
 import PostCard from './PostCard.vue'
 import SkeletonPostCard from './SkeletonPostCard.vue'
 

@@ -123,7 +123,7 @@ import { AxiosError } from 'axios'
 import type { InputFileEvent } from '@/services/types/input'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import { useUserStore } from '@/services/userStore'
-import { usePostsStore } from '@/stores/usePostsStore'
+import { usePostsStore } from '@/stores/PostsStore'
 import type { UserState } from '@/services/types/auth'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
 
