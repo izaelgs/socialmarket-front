@@ -56,23 +56,8 @@ export const useStoresStore = defineStore('stores', () => {
     category?: string
     imgLink?: string
   }, creator: UserState) => {
-    const form = new FormData()
-
-    Object.entries(store).forEach(([key, value]) => {
-      if (value) {
-        if (key === 'referenceStoreId' && typeof value === 'string') {
-          form.append(key, parseInt(value).toString())
-        } else {
-          form.append(key, value)
-        }
-      }
-    })
-
-    const data = await axios.post<Store>('store', form, {
-      headers: {
-        'content-type': 'multipart/form-data'
-      }
-    })
+    console.log('store', store)
+    const data = await axios.post<Store>('store', store)
 
     stores.value.unshift({ ...data, creator })
   }
