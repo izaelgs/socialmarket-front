@@ -12,6 +12,16 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [
+          ['@', './src']
+        ],
+        extensions: ['.ts', '.js', '.jsx', '.json', '.vue']
+      }
+    }
+  },
   options: {
     "vue/multi-word-component-names": ["error", {
       "ignores": []

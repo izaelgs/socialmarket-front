@@ -7,9 +7,9 @@
     shadow
   ">
     <ul>
-      <SideBarIcon path="./" icon="material-symbols:house-rounded" tooltip="Home" />
-      <SideBarIcon path="edit-profile" icon="material-symbols:manage-accounts-rounded" tooltip="Edit Profile" />
-      <SideBarIcon path="manage-stores" icon="mdi:store-cog" tooltip="Manage Stores" />
+      <SideBarIcon path="/dashboard" icon="material-symbols:house-rounded" tooltip="Home" />
+      <SideBarIcon path="/dashboard/edit-profile" icon="material-symbols:manage-accounts-rounded" tooltip="Edit Profile" />
+      <SideBarIcon path="/dashboard/manage-stores" icon="mdi:store-cog" tooltip="Manage Stores" />
     </ul>
     <div>
       <div class="sidebar-icon group cursor-pointer" @click="toggleDarkMode">

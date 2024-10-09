@@ -21,7 +21,7 @@
       </li>
     </ul>
 
-    <CreateStoreModal :visible="isCreateStoreModalVisible" />
+    <CreateStoreModal :visible="isCreateStoreModalVisible" @close="isCreateStoreModalVisible = false" @create="isCreateStoreModalVisible = false" />
   </div>
 </template>
 

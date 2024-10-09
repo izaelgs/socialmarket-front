@@ -29,7 +29,7 @@
               rows="1"
               ref="contentTextarea"
               placeholder="What's on your mind?"
-              class="bg-transparent block w-full rounded-md border-0 py-1.5 text-light-900 shadow-sm ring-1 ring-inset dark:ring-gray-600 ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              class="transparent-input"
               @input="adjustTextareaHeight"
             ></textarea>
           </div>

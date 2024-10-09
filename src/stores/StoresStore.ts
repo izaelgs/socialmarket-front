@@ -45,6 +45,32 @@ export const useStoresStore = defineStore('stores', () => {
     }
   }
 
+  const fetchStore = async (storeId: number) => {
+    try {
+      loading.value = true
+      const response = await axios.get<Store>(`store/${storeId}`)
+      const fetchedStore = response
+      
+      // Update the store in the stores array if it exists
+      const index = stores.value.findIndex(store => store.id === storeId)
+      if (index !== -1) {
+        stores.value[index] = fetchedStore
+      } else {
+        // If the store doesn't exist in the array, add it
+        stores.value.push(fetchedStore)
+      }
+
+      return fetchedStore
+    } catch (err: any) {
+      console.error('Error fetching store:', err)
+      error.value = err.message
+      toast.error('Error fetching store. Please try again later.')
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
   const addStore = async (store: {
     name?: string
     displayName?: string
@@ -56,7 +82,6 @@ export const useStoresStore = defineStore('stores', () => {
     category?: string
     imgLink?: string
   }, creator: UserState) => {
-    console.log('store', store)
     const data = await axios.post<Store>('store', store)
 
     stores.value.unshift({ ...data, creator })
@@ -84,8 +109,10 @@ export const useStoresStore = defineStore('stores', () => {
     loading,
     error,
     fetchStores,
+    fetchStore,
     addStore,
     updateStore,
     removeStore,
   }
 })
+

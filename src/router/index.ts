@@ -7,22 +7,27 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'Home',
-      component: () => import('../views/DashboardView.vue'),
+      component: () => import('@/views/DashboardView.vue'),
       children: [
         {
           path: '',
           name: 'Home',
-          component: () => import('../views/dashboard/HomeView/Index.vue'),
+          component: () => import('@/views/dashboard/HomeView/Index.vue'),
         },
         {
           path: 'edit-profile',
           name: 'Edit Profile',
-          component: () => import('../views/dashboard/EditProfileView/Index.vue'),
+          component: () => import('@/views/dashboard/EditProfileView/Index.vue'),
         },
         {
           path: 'manage-stores',
           name: 'Manage Stores',
-          component: () => import('../views/dashboard/Stores/Index.vue'),
+          component: () => import('@/views/dashboard/Stores/Index.vue'),
+        },
+        {
+          path: 'manage-store/:id',
+          name: 'Manage Store',
+          component: () => import('@/views/dashboard/Store/Index.vue'),
         }
       ],
       beforeEnter: Guard.auth
@@ -30,27 +35,27 @@ const router = createRouter({
     {
       path: '/register',
       name: 'register',
-      component: () => import('../views/auth/RegisterView.vue')
+      component: () => import('@/views/auth/RegisterView.vue')
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/auth/LoginView.vue')
+      component: () => import('@/views/auth/LoginView.vue')
     },
     {
       path: '/forgot-password',
       name: 'forgot-password',
-      component: () => import('../views/auth/ForgotPassword.vue')
+      component: () => import('@/views/auth/ForgotPassword.vue')
     },
     {
       path: '/reset-password/:token',
       name: 'reset-password',
-      component: () => import('../views/auth/ResetPassword.vue')
+      component: () => import('@/views/auth/ResetPassword.vue')
     },
     {
       path: '/',
       name: 'index',
-      component: () => import('../views/HomeView.vue')
+      component: () => import('@/views/HomeView.vue')
     },
     {
       path: '/about',
@@ -58,7 +63,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      component: () => import('@/views/AboutView.vue')
     }
   ]
 })

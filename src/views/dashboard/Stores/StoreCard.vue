@@ -3,7 +3,7 @@
     class="flex flex-col justify-center w-full p-4 border rounded-lg shadow dark:border-gray-700 mb-8 pt-2"
   >
     <div class="lg:flex lg:items-center lg:justify-between">
-      <div class="min-w-0 flex-1">
+      <router-link :to="{ path: `manage-store/${props.store.id}` }" class="min-w-0 flex-1">
         <h2 class="text-2xl font-bold leading-7 sm:truncate sm:text-3xl sm:tracking-tight">
           {{ props.store.name }}
         </h2>
@@ -24,7 +24,7 @@
                 d="M3 15.055v-.684c.126.053.255.1.39.142 2.092.642 4.313.987 6.61.987 2.297 0 4.518-.345 6.61-.987.135-.041.264-.089.39-.142v.684c0 1.347-.985 2.53-2.363 2.686a41.454 41.454 0 01-9.274 0C3.985 17.585 3 16.402 3 15.055z"
               />
             </svg>
-            {{props.store.category}}
+            {{ props.store.category }}
           </div>
           <div class="mt-2 flex items-center text-sm text-gray-500">
             <svg
@@ -39,7 +39,7 @@
                 clip-rule="evenodd"
               />
             </svg>
-            {{props.store.state}} - {{props.store.city}}
+            {{ props.store.state }} - {{ props.store.city }}
           </div>
           <div class="mt-2 flex items-center text-sm text-gray-500">
             <svg
@@ -54,12 +54,12 @@
                 clip-rule="evenodd"
               />
             </svg>
-            Created at {{new Date(props.store.createdAt ?? '').toLocaleString()}}
+            Created at {{ new Date(props.store.createdAt ?? '').toLocaleString() }}
           </div>
         </div>
-      </div>
+      </router-link>
       <div class="mt-5 flex lg:ml-4 lg:mt-0">
-        <span class="hidden sm:block">
+        <router-link :to="{ path: `manage-store/${props.store.id}` }" class="hidden sm:block">
           <button
             type="button"
             class="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset dark:ring-gray-700 ring-gray-300 hover:bg-gray-50"
@@ -76,7 +76,7 @@
             </svg>
             Edit
           </button>
-        </span>
+        </router-link>
 
         <span class="ml-3 hidden sm:block">
           <button
@@ -128,11 +128,11 @@
     </div>
 
     <DeleteConfirmationModal
-      :show="showDeleteConfirmationModal"
-      @confirm="confirmDelete"
-      @cancel="closeDeleteConfirmationModal"
+      :visible="showDeleteConfirmationModal"
       :isDeleting="isDeleting"
       :isComment="isComment"
+      @confirm="confirmDelete"
+      @close="closeDeleteConfirmationModal"
     />
   </div>
 </template>
@@ -150,42 +150,11 @@ const props = defineProps<{
   isComment?: boolean
 }>()
 
-const user = useUserStore()
 const postsStore = useStoresStore()
 
-const imageLoading = ref<boolean>(true)
-const menuOpen = ref<boolean>(false)
-const editMode = ref<boolean>(false)
-
 const showDeleteConfirmationModal = ref<boolean>(false)
-const showImagePreviewModal = ref(false)
-const showComments = ref(false)
 
-const isSaving = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
-const isCommenting = ref<boolean>(false)
-const isCreatingComment = ref<boolean>(false)
-
-const contentTextarea = ref<HTMLTextAreaElement>()
-
-const toggleMenu = (shouldBeOpened?: boolean) => {
-  menuOpen.value = shouldBeOpened ?? !menuOpen.value
-}
-
-const cancelEdit = () => {
-  editMode.value = false
-}
-
-const adjustTextareaHeight = () => {
-  const textarea = contentTextarea.value as HTMLTextAreaElement
-  textarea.style.height = 'auto'
-  textarea.style.height = `${textarea.scrollHeight}px`
-}
-
-const showDeleteModal = () => {
-  showDeleteConfirmationModal.value = true
-  menuOpen.value = false
-}
 
 const closeDeleteConfirmationModal = () => {
   showDeleteConfirmationModal.value = false
