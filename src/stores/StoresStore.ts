@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
 import { useAxiosStore } from '@/services/axiosStore'
-import type { User, UserState } from '@/services/types/auth'
+import type { UserState } from '@/services/types/auth'
 
 export interface Store {
   id: number;

@@ -26,13 +26,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { useStoresStore } from '@/stores/StoresStore'
 import StoreCard from './StoreCard.vue'
 import SkeletonStoreCard from './SkeletonStoreCard.vue'
 import CreateStoreModal from './createStoreModal.vue'
 
-const emit = defineEmits(['close', 'create'])
+defineComponent({
+  name: 'StoresIndex',
+})
+
+defineEmits(['close', 'create'])
 
 const isCreateStoreModalVisible = ref(false)
 

@@ -42,10 +42,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, ref } from 'vue'
+import { defineEmits } from 'vue'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
 
-const props = defineProps({
+defineProps({
   show: Boolean,
   isDeleting: Boolean,
   isComment: Boolean

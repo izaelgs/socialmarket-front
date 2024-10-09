@@ -19,10 +19,14 @@
 
 <script setup lang="ts">
 import CreatePostForm from './CreatePostForm.vue'
-import { onMounted } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import { usePostsStore } from '@/stores/PostsStore'
 import PostCard from './PostCard.vue'
 import SkeletonPostCard from './SkeletonPostCard.vue'
+
+defineComponent({
+  name: 'HomeViewIndex',
+})
 
 const postsStore = usePostsStore()
 

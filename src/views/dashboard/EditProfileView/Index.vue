@@ -189,13 +189,17 @@
 <script setup lang="ts">
 import { useAxiosStore } from '@/services/axiosStore'
 import { useUserStore } from '@/services/userStore'
-import { onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { type InputFileEvent } from '@/services/types/input'
 import { AxiosError } from 'axios'
 import { toast } from 'vue3-toastify'
 import type { User } from '@/services/types/auth'
 import ConfirmationModal from '@/components/modals/ConfirmationModal.vue'
 import { useRouter } from 'vue-router'
+
+defineComponent({
+  name: 'EditProfileViewIndex',
+})
 
 const user = useUserStore()
 const axios = useAxiosStore()

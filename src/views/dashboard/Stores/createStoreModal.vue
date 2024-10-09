@@ -129,10 +129,9 @@ import { useStoresStore } from '@/stores/StoresStore'
 import { useUserStore } from '@/services/userStore'
 import type { UserState } from '@/services/types/auth'
 import { toast } from 'vue3-toastify'
-import { AxiosError } from 'axios'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
 
-const props = defineProps<{ visible: boolean }>()
+defineProps<{ visible: boolean }>()
 const emit = defineEmits(['close', 'create'])
 
 const isCreating = ref<boolean>(false)

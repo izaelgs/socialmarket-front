@@ -128,11 +128,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStoresStore } from '@/stores/StoresStore'
 import type { Store } from '@/stores/StoresStore'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
+
+defineComponent({
+  name: 'StoreIndex',
+})
 
 const route = useRoute()
 const storesStore = useStoresStore()

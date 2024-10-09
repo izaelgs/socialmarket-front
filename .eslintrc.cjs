@@ -21,10 +21,5 @@ module.exports = {
         extensions: ['.ts', '.js', '.jsx', '.json', '.vue']
       }
     }
-  },
-  options: {
-    "vue/multi-word-component-names": ["error", {
-      "ignores": []
-    }]
   }
 }

@@ -138,12 +138,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useStoresStore, type Store } from '@/stores/StoresStore'
-import { Icon } from '@iconify/vue/dist/iconify.js'
-import SpinnerComponent from '@/components/SpinnerComponent.vue'
 import DeleteConfirmationModal from './DeleteConfirmationModal.vue'
-import { useUserStore } from '@/services/userStore'
 
 const props = defineProps<{
   store: Store
