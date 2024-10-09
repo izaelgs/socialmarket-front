@@ -61,7 +61,3 @@ const cancel = () => {
   emit('cancel')
 }
 </script>
-
-<style scoped>
-/* Add your modal-specific styles here if needed */
-</style>

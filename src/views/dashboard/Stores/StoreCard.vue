@@ -100,6 +100,28 @@
           </button>
         </span>
 
+        <span class="ml-3 hidden sm:block">
+          <button
+            type="button"
+            @click="openDeleteConfirmationModal"
+            class="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset dark:ring-gray-700 ring-gray-300 hover:bg-gray-50"
+          >
+            <svg
+              class="-ml-0.5 mr-1.5 h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Delete
+          </button>
+        </span>
+
         <!-- Dropdown -->
         <div class="relative ml-3 sm:hidden">
           <button
@@ -123,16 +145,43 @@
               />
             </svg>
           </button>
+          <!-- Add dropdown menu items -->
+          <div
+            class="absolute right-0 z-10 mt-2 -mr-1 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="mobile-menu-button"
+            tabindex="-1"
+          >
+            <router-link
+              :to="{ path: `manage-store/${props.store.id}` }"
+              class="block px-4 py-2 text-sm text-gray-700"
+              role="menuitem"
+              tabindex="-1"
+              >Edit</router-link
+            >
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+              >View</a
+            >
+            <a
+              href="#"
+              @click.prevent="openDeleteConfirmationModal"
+              class="block px-4 py-2 text-sm"
+              role="menuitem"
+              tabindex="-1"
+              >Delete</a
+            >
+          </div>
         </div>
       </div>
     </div>
 
     <DeleteConfirmationModal
-      :visible="showDeleteConfirmationModal"
+      :show="showDeleteConfirmationModal"
       :isDeleting="isDeleting"
       :isComment="isComment"
       @confirm="confirmDelete"
-      @close="closeDeleteConfirmationModal"
+      @cancel="closeDeleteConfirmationModal"
     />
   </div>
 </template>
@@ -167,6 +216,10 @@ const confirmDelete = async () => {
     console.error('Error deleting post:', error)
     isDeleting.value = false
   }
+}
+
+const openDeleteConfirmationModal = () => {
+  showDeleteConfirmationModal.value = true
 }
 </script>
 

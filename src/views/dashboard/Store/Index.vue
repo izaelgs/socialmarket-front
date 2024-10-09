@@ -8,7 +8,7 @@
         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-200"
           >Store Name</label
         >
-        <input v-model="store.name" type="text" id="name" class="mt-1 transparent-input" required />
+        <input v-model="store.name" type="text" id="name" class="mt-1 transparent-input text-gray-700 dark:text-gray-200" required />
       </div>
       <div class="mb-4">
         <label for="displayName" class="block text-sm font-medium text-gray-700 dark:text-gray-200"
@@ -121,9 +121,7 @@
         </button>
       </div>
     </form>
-    <div v-else class="text-center text-gray-500 dark:text-gray-400">
-      No store data available.
-    </div>
+    <div v-else class="text-center text-gray-500 dark:text-gray-400">No store data available.</div>
   </div>
 </template>
 
@@ -135,7 +133,7 @@ import type { Store } from '@/stores/StoresStore'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
 
 defineComponent({
-  name: 'StoreIndex',
+  name: 'StoreIndex'
 })
 
 const route = useRoute()
@@ -148,6 +146,7 @@ const isLoading = computed(() => storesStore.loading)
 
 const fetchStoreData = async () => {
   const storeId = Number(route.params.id)
+
   if (!isNaN(storeId)) {
     try {
       store.value = await storesStore.fetchStore(storeId)
@@ -173,6 +172,4 @@ const updateStore = async () => {
     }
   }
 }
-
-console.log('route.params.id', route.params.id)
 </script>

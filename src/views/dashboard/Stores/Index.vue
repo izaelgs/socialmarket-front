@@ -30,7 +30,7 @@ import { defineComponent, onMounted, ref } from 'vue'
 import { useStoresStore } from '@/stores/StoresStore'
 import StoreCard from './StoreCard.vue'
 import SkeletonStoreCard from './SkeletonStoreCard.vue'
-import CreateStoreModal from './createStoreModal.vue'
+import CreateStoreModal from './CreateStoreModal.vue'
 
 defineComponent({
   name: 'StoresIndex',
