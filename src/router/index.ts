@@ -7,27 +7,27 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'Home',
-      component: () => import('@/views/DashboardView.vue'),
+      component: () => import('@/views/Dashboard/Index.vue'),
       children: [
         {
           path: '',
           name: 'Home',
-          component: () => import('@/views/dashboard/HomeView/Index.vue'),
+          component: () => import('@/views/Dashboard/HomeView/Index.vue'),
         },
         {
           path: 'edit-profile',
           name: 'Edit Profile',
-          component: () => import('@/views/dashboard/EditProfileView/Index.vue'),
+          component: () => import('@/views/Dashboard/EditProfileView/Index.vue'),
         },
         {
           path: 'manage-stores',
           name: 'Manage Stores',
-          component: () => import('@/views/dashboard/Stores/Index.vue'),
+          component: () => import('@/views/Dashboard/Stores/Index.vue'),
         },
         {
           path: 'manage-store/:id',
           name: 'Manage Store',
-          component: () => import('@/views/dashboard/Store/Index.vue'),
+          component: () => import('@/views/Dashboard/Store/Index.vue'),
         }
       ],
       beforeEnter: Guard.auth
