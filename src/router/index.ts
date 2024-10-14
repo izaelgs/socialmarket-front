@@ -6,33 +6,33 @@ const router = createRouter({
   routes: [
     {
       path: '/dashboard',
-      name: 'Dashboard_',
-      component: () => import('@/views/Dashboard_/Index.vue'),
+      name: 'Dashboard',
+      component: () => import('@/views/Dashboard/Index.vue'),
       children: [
         {
           path: '',
           name: 'Home',
-          component: () => import('@/views/Dashboard_/HomeView/Index.vue')
+          component: () => import('@/views/Dashboard/HomeView/Index.vue')
         },
         {
           path: 'edit-profile',
           name: 'Edit Profile',
-          component: () => import('@/views/Dashboard_/EditProfileView/Index.vue')
+          component: () => import('@/views/Dashboard/EditProfileView/Index.vue')
         },
         {
           path: 'manage-stores',
           name: 'Manage Stores',
-          component: () => import('@/views/Dashboard_/Stores/Index.vue')
+          component: () => import('@/views/Dashboard/Stores/Index.vue')
         },
         {
           path: 'manage-store/:id',
           name: 'Manage Store',
-          component: () => import('@/views/Dashboard_/Store/Index.vue')
+          component: () => import('@/views/Dashboard/Store/Index.vue')
         },
         {
           path: 'recent-products',
           name: 'RecentProducts',
-          component: () => import('@/views/Dashboard_/RecentProducts/Index.vue'),
+          component: () => import('@/views/Dashboard/RecentProducts/Index.vue'),
           meta: { requiresAuth: true }
         }
       ],
