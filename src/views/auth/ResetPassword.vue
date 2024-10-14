@@ -41,7 +41,10 @@
               placeholder="Confirm your new password"
               v-model="passwordConfirmation"
               :class="{ 'input-error': errors.includes('passwordConfirmation') }"
-              @input="errors.includes('passwordConfirmation') && errors.splice(errors.indexOf('passwordConfirmation'), 1)"
+              @input="
+                errors.includes('passwordConfirmation') &&
+                  errors.splice(errors.indexOf('passwordConfirmation'), 1)
+              "
             />
           </div>
         </div>
@@ -88,13 +91,16 @@ const submit = async () => {
       return toast.error('Password must be larger than 8 digits.')
     }
 
-    if(password.value !== passwordConfirmation.value) {
+    if (password.value !== passwordConfirmation.value) {
       errors.value.push('passwordConfirmation')
       isLoading.value = false
       return toast.error('Password and password confirmation must match.')
     }
 
-    await axios.post('/auth/reset-password', { password: password.value, token: route.params.token})
+    await axios.post('/auth/reset-password', {
+      password: password.value,
+      token: route.params.token
+    })
 
     isLoading.value = false
 
@@ -106,7 +112,7 @@ const submit = async () => {
     console.error(error)
 
     if (error instanceof AxiosError) {
-      if(error.response?.status === 422) {
+      if (error.response?.status === 422) {
         errors.value.push(...['passwordConfirmation', 'password'])
         return toast.error('Invalid password, plase enter a valid password')
       } else if (error.response?.data.message) return toast.error(error.response.data.message)

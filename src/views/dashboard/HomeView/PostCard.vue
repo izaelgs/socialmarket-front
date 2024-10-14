@@ -73,11 +73,7 @@
             </div>
 
             <template v-if="editMode">
-              <textarea
-                v-model="editedContent"
-                rows="4"
-                class="transparent-input"
-              ></textarea>
+              <textarea v-model="editedContent" rows="4" class="transparent-input"></textarea>
 
               <div class="flex items-center justify-end gap-x-6 mt-2">
                 <button @click="cancelEdit" class="text-sm font-semibold leading-6 text-light-900">
@@ -118,8 +114,16 @@
                 </li>
               </ul>
 
-              <button @click="showComments = !showComments" v-if="post.comments.length" class="text-xs font-semibold leading-6 text-light-900">
-                {{ showComments ? 'Hide Comments' : `Show ${post.comments.length} Comment${post.comments.length > 1 ? 's' : ''}` }}
+              <button
+                @click="showComments = !showComments"
+                v-if="post.comments.length"
+                class="text-xs font-semibold leading-6 text-light-900"
+              >
+                {{
+                  showComments
+                    ? 'Hide Comments'
+                    : `Show ${post.comments.length} Comment${post.comments.length > 1 ? 's' : ''}`
+                }}
               </button>
 
               <form
@@ -182,12 +186,9 @@
       <div class="relative bg-white rounded shadow-lg max-w-2xl" @click.stop>
         <button
           @click="showImagePreviewModal = false"
-          class="absolute top-0 right-0 mt-2 mr-2 text-white "
+          class="absolute top-0 right-0 mt-2 mr-2 text-white"
         >
-          <Icon
-            icon="material-symbols:close"
-            class="h-6 w-6"
-          />
+          <Icon icon="material-symbols:close" class="h-6 w-6" />
         </button>
         <img :src="post.imageUrl" alt="Preview Image" class="object-cover" />
       </div>

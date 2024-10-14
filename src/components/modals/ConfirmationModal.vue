@@ -4,7 +4,13 @@
       <h2 class="text-lg font-semibold mb-4">{{ title }}</h2>
       <p class="mb-4">{{ message }}</p>
       <div class="flex justify-end">
-        <button type="button" class="px-4 text-sm font-semibold leading-6 text-light-900" @click="onCancel">Cancel</button>
+        <button
+          type="button"
+          class="px-4 text-sm font-semibold leading-6 text-light-900"
+          @click="onCancel"
+        >
+          Cancel
+        </button>
         <button
           type="button"
           class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"

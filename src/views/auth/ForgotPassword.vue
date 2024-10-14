@@ -40,10 +40,10 @@
 
 <script setup lang="ts">
 import AuthLayout from '@/layouts/AuthLayout.vue'
-import { useAxiosStore } from '@/services/axiosStore';
+import { useAxiosStore } from '@/services/axiosStore'
 import { ref, type Ref } from 'vue'
-import { useRouter } from 'vue-router';
-import { toast } from 'vue3-toastify';
+import { useRouter } from 'vue-router'
+import { toast } from 'vue3-toastify'
 
 const axios = useAxiosStore()
 const router = useRouter()

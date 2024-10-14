@@ -4,7 +4,11 @@
       <form @submit.prevent="submit" class="space-y-6" action="#" method="POST">
         <!-- Name -->
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">Name</label>
+          <label
+            for="email"
+            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+            >Name</label
+          >
           <div class="mt-2">
             <input
               id="name"
@@ -20,7 +24,11 @@
 
         <!-- E-mail -->
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">Email address</label>
+          <label
+            for="email"
+            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+            >Email address</label
+          >
           <div class="mt-2">
             <input
               id="email"
@@ -38,7 +46,11 @@
         <!-- Password -->
         <div>
           <div class="flex items-center justify-between">
-            <label for="password" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">Password</label>
+            <label
+              for="password"
+              class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+              >Password</label
+            >
           </div>
           <div class="mt-2">
             <input
@@ -73,9 +85,7 @@
     <template #bottom>
       <p class="mt-10 text-center text-sm text-gray-500">
         Already registered?
-        <router-link
-          to="login"
-          class="font-semibold leading-6 text-green-600 hover:text-green-500"
+        <router-link to="login" class="font-semibold leading-6 text-green-600 hover:text-green-500"
           >Sign in</router-link
         >
       </p>
@@ -96,7 +106,7 @@ import { useUserStore } from '@/services/userStore'
 
 const axiosStore = useAxiosStore()
 const router = useRouter()
-const userStore = useUserStore();
+const userStore = useUserStore()
 
 const name = ref('')
 const email = ref('')
@@ -109,8 +119,7 @@ const submit = async () => {
   isLoading.value = true
 
   try {
-
-    userStore.removeFromLocalStorage();
+    userStore.removeFromLocalStorage()
 
     const payload: User = {
       name: name.value,
@@ -120,12 +129,12 @@ const submit = async () => {
       birthAt: new Date().toISOString().split('T')[0],
       about: '',
       photo: '',
-      cover_photo : '',
+      cover_photo: ''
     }
 
     const result: any = await axiosStore.post('/auth/register', payload)
 
-    userStore.setUser(result.user);
+    userStore.setUser(result.user)
 
     router.push('dashboard/edit-profile')
 

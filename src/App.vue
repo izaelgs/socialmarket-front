@@ -6,11 +6,15 @@
 
 <script setup lang="ts">
 import useThemeStorage from '@/stores/ThemeStorage'
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 const darkMode = computed({
-  get() { return useThemeStorage().darkMode },
-  set(val) { useThemeStorage().darkMode = val }
+  get() {
+    return useThemeStorage().darkMode
+  },
+  set(val) {
+    useThemeStorage().darkMode = val
+  }
 })
 
 import 'vue3-toastify/dist/index.css'

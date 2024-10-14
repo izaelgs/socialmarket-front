@@ -1,17 +1,35 @@
 <template>
-  <div v-if="visible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="bg-white dark:bg-slate-900 p-6 rounded-md shadow-md">
-      <h2 class="text-lg font-semibold mb-4">Create Store</h2>
-      <form @submit.prevent="createStore">
+  <div class="border border-gray-200 dark:border-gray-700 rounded-md">
+    <button
+      @click="toggleDropdown"
+      class="w-full flex justify-between items-center p-4 text-left focus:outline-none"
+    >
+      <span class="text-lg font-medium text-gray-700 dark:text-gray-200">Edit Store Details</span>
+      <svg
+        class="w-5 h-5 transition-transform duration-200"
+        :class="{ 'transform rotate-180': isOpen }"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </button>
+    <div v-show="isOpen" class="p-4 border-t border-gray-200 dark:border-gray-700">
+      <form @submit.prevent="persistUpdateStore">
         <div class="mb-4">
           <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-200"
             >Store Name</label
           >
           <input
-            v-model="store.name"
+            v-model="storeData.name"
             type="text"
             id="name"
-            class="mt-1 transparent-input"
+            class="mt-1 transparent-input text-gray-700 dark:text-gray-200"
             required
           />
         </div>
@@ -22,7 +40,7 @@
             >Display Name</label
           >
           <input
-            v-model="store.displayName"
+            v-model="storeData.displayName"
             type="text"
             id="displayName"
             class="mt-1 transparent-input"
@@ -34,7 +52,7 @@
             >Name Link</label
           >
           <input
-            v-model="store.nameLink"
+            v-model="storeData.nameLink"
             type="text"
             id="nameLink"
             class="mt-1 transparent-input"
@@ -48,19 +66,19 @@
             >Description</label
           >
           <textarea
-            v-model="store.description"
+            v-model="storeData.description"
             id="description"
             class="mt-1 transparent-input"
             required
           ></textarea>
         </div>
-        <div class="mb-4 grid grid-flow-col gap-4">
+        <div class="mb-4 grid grid-cols-2 gap-4">
           <div>
             <label for="cnpj" class="block text-sm font-medium text-gray-700 dark:text-gray-200"
               >CNPJ</label
             >
             <input
-              v-model="store.cnpj"
+              v-model="storeData.cnpj"
               type="text"
               id="cnpj"
               class="mt-1 transparent-input"
@@ -72,7 +90,7 @@
               >State</label
             >
             <input
-              v-model="store.state"
+              v-model="storeData.state"
               type="text"
               id="state"
               class="mt-1 transparent-input"
@@ -80,13 +98,13 @@
             />
           </div>
         </div>
-        <div class="mb-4 grid grid-flow-col gap-4">
+        <div class="mb-4 grid grid-cols-2 gap-4">
           <div>
             <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-200"
               >City</label
             >
             <input
-              v-model="store.city"
+              v-model="storeData.city"
               type="text"
               id="city"
               class="mt-1 transparent-input"
@@ -98,7 +116,7 @@
               >Category</label
             >
             <input
-              v-model="store.category"
+              v-model="storeData.category"
               type="text"
               id="category"
               class="mt-1 transparent-input"
@@ -111,7 +129,7 @@
             >Image Link</label
           >
           <input
-            v-model="store.imgLink"
+            v-model="storeData.imgLink"
             type="text"
             id="imgLink"
             class="mt-1 transparent-input"
@@ -120,20 +138,13 @@
         </div>
         <div class="flex justify-end">
           <button
-            type="button"
-            @click="closeModal"
-            class="mr-2 rounded-md bg-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-200"
-          >
-            Cancel
-          </button>
-          <button
             type="submit"
             class="rounded-md bg-green-600 px-5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-            :class="isCreating ? 'cursor-not-allowed' : 'cursor-pointer'"
-            :disabled="isCreating"
+            :class="isSaving ? 'cursor-not-allowed' : 'cursor-pointer'"
+            :disabled="isSaving"
           >
-            <template v-if="isCreating"><SpinnerComponent class="p-1" /></template>
-            <template v-else>Create</template>
+            <template v-if="isSaving"><SpinnerComponent class="p-1" /></template>
+            <template v-else>Save</template>
           </button>
         </div>
       </form>
@@ -142,74 +153,33 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useStoresStore } from '@/stores/StoresStore'
-import { useUserStore } from '@/services/userStore'
-import type { UserState } from '@/services/types/auth'
-import { toast } from 'vue3-toastify'
+import { ref, defineProps, defineEmits } from 'vue'
+import type { Store } from '@/stores/StoresStore'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
 
-defineProps<{ visible: boolean }>()
-const emit = defineEmits(['close', 'create'])
+const props = defineProps<{
+  store: Store
+}>()
 
-const isCreating = ref<boolean>(false)
+const emit = defineEmits<{
+  (e: 'update-store', store: Store): void
+}>()
 
-const store = ref({
-  name: '',
-  displayName: '',
-  nameLink: '',
-  description: '',
-  cnpj: '',
-  state: '',
-  city: '',
-  category: '',
-  imgLink: ''
-})
+const isOpen = ref(false)
+const isSaving = ref(false)
 
-const storesStore = useStoresStore()
-const user = useUserStore()
+const storeData = ref({ ...props.store })
 
-const closeModal = () => {
-  emit('close')
+const toggleDropdown = () => {
+  isOpen.value = !isOpen.value
 }
 
-const createStore = async () => {
+const persistUpdateStore = async () => {
+  isSaving.value = true
   try {
-    isCreating.value = true
-    await storesStore.addStore(store.value, user as UserState)
-    isCreating.value = false
-    closeModal()
-
-    store.value = {
-      name: '',
-      displayName: '',
-      nameLink: '',
-      description: '',
-      cnpj: '',
-      state: '',
-      city: '',
-      category: '',
-      imgLink: ''
-    }
-
-    toast.success('Store created successfully.')
-  } catch (error: any) {
-    isCreating.value = false
-    console.error('Error creating store:', error)
-
-    if (Array.isArray(error.message)) {
-      for (const message of error.message) {
-        toast.error(message)
-      }
-
-      return
-    }
-
-    toast.error('Error creating store. Please try again later.')
+    emit('update-store', storeData.value)
+  } finally {
+    isSaving.value = false
   }
 }
-
-onMounted(() => {
-  storesStore.fetchStores()
-})
 </script>

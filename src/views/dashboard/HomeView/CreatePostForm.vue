@@ -50,7 +50,9 @@
             "
           >
             <div
-              :class="`text-center absolute w-full h-full flex flex-col items-center justify-center ${previewImageUrl ? 'opacity-0' : ''}`"
+              :class="`text-center absolute w-full h-full flex flex-col items-center justify-center ${
+                previewImageUrl ? 'opacity-0' : ''
+              }`"
             >
               <svg
                 class="mx-auto h-12 w-12 text-gray-300"

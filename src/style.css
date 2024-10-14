@@ -17,7 +17,7 @@
     rounded-md shadow-md
     text-white bg-gray-900
     text-xs font-bold
-    transition-all duration-100 scale-0 origin-left
+    transition-all duration-100 scale-0 origin-left;
   }
 
   /* Scrollbar Styles */
@@ -37,11 +37,11 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      @apply dark:bg-green-900 bg-green-900 rounded
+      @apply dark:bg-green-900 bg-green-900 rounded;
     }
 
     &::-webkit-scrollbar-track {
-      @apply dark:bg-slate-900 bg-white
+      @apply dark:bg-slate-900 bg-white;
     }
   }
 }

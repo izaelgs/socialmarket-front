@@ -25,7 +25,7 @@ import PostCard from './PostCard.vue'
 import SkeletonPostCard from './SkeletonPostCard.vue'
 
 defineComponent({
-  name: 'HomeViewIndex',
+  name: 'HomeViewIndex'
 })
 
 const postsStore = usePostsStore()

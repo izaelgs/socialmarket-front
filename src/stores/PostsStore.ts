@@ -39,12 +39,15 @@ export const usePostsStore = defineStore('posts', () => {
     }
   }
 
-  const addPost = async (post: {
-    content?: string
-    imageUrl?: string
-    image?: File
-    referencePostId?: string
-  }, user: UserState) => {
+  const addPost = async (
+    post: {
+      content?: string
+      imageUrl?: string
+      image?: File
+      referencePostId?: string
+    },
+    user: UserState
+  ) => {
     const form = new FormData()
 
     Object.entries(post).forEach(([key, value]) => {
@@ -66,12 +69,15 @@ export const usePostsStore = defineStore('posts', () => {
     posts.value.unshift({ ...data, user, comments: [] })
   }
 
-  const addComment = async (comment: {
-    content?: string
-    imageUrl?: string
-    image?: File
-    referencePostId?: string
-  }, user: UserState) => {
+  const addComment = async (
+    comment: {
+      content?: string
+      imageUrl?: string
+      image?: File
+      referencePostId?: string
+    },
+    user: UserState
+  ) => {
     const form = new FormData()
 
     Object.entries(comment).forEach(([key, value]) => {
@@ -90,8 +96,7 @@ export const usePostsStore = defineStore('posts', () => {
       }
     })
 
-    posts.value = posts.value
-      .map(post => addPostComment(post, { ...data, user, comments: [] }));
+    posts.value = posts.value.map((post) => addPostComment(post, { ...data, user, comments: [] }))
   }
 
   const updatePost = async (updatedPost: Partial<Post> & { id: number }) => {
@@ -101,16 +106,16 @@ export const usePostsStore = defineStore('posts', () => {
       }
     })
 
-    posts.value = posts.value
-      .map(post => updatePostComment(post, data));
+    posts.value = posts.value.map((post) => updatePostComment(post, data))
   }
 
   const removePost = async (postId: number) => {
-    await axios.delete<Post>('post/' + postId);
+    await axios.delete<Post>('post/' + postId)
 
-    posts.value = posts.value.filter(post => post.id !== postId)
-      .map(post => deletePostComment(post, postId))
-      .filter((post): post is Post => post !== null);
+    posts.value = posts.value
+      .filter((post) => post.id !== postId)
+      .map((post) => deletePostComment(post, postId))
+      .filter((post): post is Post => post !== null)
   }
 
   const addPostComment = (post: Post, addedPost: Post): Post => {
@@ -119,38 +124,36 @@ export const usePostsStore = defineStore('posts', () => {
     }
 
     if (post.comments && post.comments.length > 0) {
-      post.comments = post.comments
-        .map(comment => addPostComment(comment, addedPost))
+      post.comments = post.comments.map((comment) => addPostComment(comment, addedPost))
     }
 
-    return post;
+    return post
   }
 
   const updatePostComment = (post: Post, updatedPost: Post): Post => {
     if (post.id === updatedPost.id) {
-      return { ...post, ...updatedPost };
+      return { ...post, ...updatedPost }
     }
 
     if (post.comments && post.comments.length > 0) {
-      post.comments = post.comments
-        .map(comment => updatePostComment(comment, updatedPost))
+      post.comments = post.comments.map((comment) => updatePostComment(comment, updatedPost))
     }
 
-    return post;
+    return post
   }
 
   const deletePostComment = (post: Post, postId: number): Post | null => {
     if (post.id === postId) {
-      return null;
+      return null
     }
 
     if (post.comments && post.comments.length > 0) {
       post.comments = post.comments
-        .map(comment => deletePostComment(comment, postId))
-        .filter((post): post is Post => post !== null);
+        .map((comment) => deletePostComment(comment, postId))
+        .filter((post): post is Post => post !== null)
     }
 
-    return post;
+    return post
   }
 
   return {
@@ -161,6 +164,6 @@ export const usePostsStore = defineStore('posts', () => {
     addPost,
     addComment,
     updatePost,
-    removePost,
+    removePost
   }
 })

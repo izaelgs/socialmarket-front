@@ -21,7 +21,11 @@
       </li>
     </ul>
 
-    <CreateStoreModal :visible="isCreateStoreModalVisible" @close="isCreateStoreModalVisible = false" @create="isCreateStoreModalVisible = false" />
+    <CreateStoreModal
+      :visible="isCreateStoreModalVisible"
+      @close="isCreateStoreModalVisible = false"
+      @create="isCreateStoreModalVisible = false"
+    />
   </div>
 </template>
 
@@ -33,7 +37,7 @@ import SkeletonStoreCard from './SkeletonStoreCard.vue'
 import CreateStoreModal from './CreateStoreModal.vue'
 
 defineComponent({
-  name: 'StoresIndex',
+  name: 'StoresIndex'
 })
 
 defineEmits(['close', 'create'])

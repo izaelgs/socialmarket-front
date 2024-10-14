@@ -52,7 +52,11 @@
           <Icon v-if="darkMode" icon="material-symbols:light-mode" @click="toggleDarkMode" />
           <Icon v-else icon="material-symbols:mode-night" @click="toggleDarkMode" />
         </div>
-        <div class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100 px-2 cursor-default">|</div>
+        <div
+          class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100 px-2 cursor-default"
+        >
+          |
+        </div>
         <router-link
           to="login"
           class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100"

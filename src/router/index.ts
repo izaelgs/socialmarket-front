@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Guard from '@/services/middleware';
+import { createRouter, createWebHistory } from 'vue-router'
+import Guard from '@/services/middleware'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,22 +12,22 @@ const router = createRouter({
         {
           path: '',
           name: 'Home',
-          component: () => import('@/views/Dashboard/HomeView/Index.vue'),
+          component: () => import('@/views/Dashboard/HomeView/Index.vue')
         },
         {
           path: 'edit-profile',
           name: 'Edit Profile',
-          component: () => import('@/views/Dashboard/EditProfileView/Index.vue'),
+          component: () => import('@/views/Dashboard/EditProfileView/Index.vue')
         },
         {
           path: 'manage-stores',
           name: 'Manage Stores',
-          component: () => import('@/views/Dashboard/Stores/Index.vue'),
+          component: () => import('@/views/Dashboard/Stores/Index.vue')
         },
         {
           path: 'manage-store/:id',
           name: 'Manage Store',
-          component: () => import('@/views/Dashboard/Store/Index.vue'),
+          component: () => import('@/views/Dashboard/Store/Index.vue')
         }
       ],
       beforeEnter: Guard.auth

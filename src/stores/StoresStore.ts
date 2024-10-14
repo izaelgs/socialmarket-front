@@ -3,24 +3,25 @@ import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
 import { useAxiosStore } from '@/services/axiosStore'
 import type { UserState } from '@/services/types/auth'
+import type { Product } from './ProductsStore'
 
 export interface Store {
-  id: number;
-  name: string;
-  displayName: string;
-  nameLink: string;
-  description?: string;
-  cnpj: string;
-  state: string;
-  city: string;
-  category: string;
-  imgLink?: string;
-  creatorId: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  creator: UserState;
+  id: number
+  name: string
+  displayName: string
+  nameLink: string
+  description?: string
+  cnpj: string
+  state: string
+  city: string
+  category: string
+  imgLink?: string
+  creatorId: number
+  createdAt?: Date
+  updatedAt?: Date
+  creator: UserState
   // associates?: Associate[];
-  // products?: Product[];
+  products?: Product[]
 }
 
 export const useStoresStore = defineStore('stores', () => {
@@ -50,9 +51,9 @@ export const useStoresStore = defineStore('stores', () => {
       loading.value = true
       const response = await axios.get<Store>(`store/${storeId}`)
       const fetchedStore = response
-      
+
       // Update the store in the stores array if it exists
-      const index = stores.value.findIndex(store => store.id === storeId)
+      const index = stores.value.findIndex((store) => store.id === storeId)
       if (index !== -1) {
         stores.value[index] = fetchedStore
       } else {
@@ -71,37 +72,49 @@ export const useStoresStore = defineStore('stores', () => {
     }
   }
 
-  const addStore = async (store: {
-    name?: string
-    displayName?: string
-    nameLink?: string
-    description?: string
-    cnpj?: string
-    state?: string
-    city?: string
-    category?: string
-    imgLink?: string
-  }, creator: UserState) => {
+  const addStore = async (
+    store: {
+      name?: string
+      displayName?: string
+      nameLink?: string
+      description?: string
+      cnpj?: string
+      state?: string
+      city?: string
+      category?: string
+      imgLink?: string
+    },
+    creator: UserState
+  ) => {
     const data = await axios.post<Store>('store', store)
 
     stores.value.unshift({ ...data, creator })
+
+    return data
   }
 
-  const updateStore = async (updatedStore: Partial<Store> & { id: number }) => {
-    const data = await axios.patch<Store>('store/' + updatedStore.id, updatedStore, {
+  const persistUpdateStore = async (updatedStore: Partial<Store> & { id: number }) => {
+    await axios.patch<Store>('store/' + updatedStore.id, updatedStore, {
       headers: {
         'Content-Type': 'application/json; charset=utf-8'
       }
     })
 
-    stores.value = stores.value
-      .map(store => store.id === updatedStore.id ? { ...store, ...data } : store);
+    stores.value = stores.value.map((store) =>
+      store.id === updatedStore.id ? { ...store, ...updatedStore } : store
+    )
+  }
+
+  const updateStore = (updatedStore: Partial<Store> & { id: number }) => {
+    stores.value = stores.value.map((store) =>
+      store.id == updatedStore.id ? { ...store, ...updatedStore } : store
+    )
   }
 
   const removeStore = async (storeId: number) => {
-    await axios.delete<Store>('store/' + storeId);
+    await axios.delete<Store>('store/' + storeId)
 
-    stores.value = stores.value.filter(store => store.id !== storeId);
+    stores.value = stores.value.filter((store) => store.id !== storeId)
   }
 
   return {
@@ -112,7 +125,7 @@ export const useStoresStore = defineStore('stores', () => {
     fetchStore,
     addStore,
     updateStore,
-    removeStore,
+    persistUpdateStore,
+    removeStore
   }
 })
-
