@@ -21,8 +21,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: List contents of src/views
-        run: ls -R src/views
+      - name: List project structure
+        run: |
+          echo "Project structure:"
+          tree -L 3 src
 
       - name: Build project
         run: npm run build
