@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Guard from '@/services/middleware'
+import Dashboard from '@/views/Dashboard/Index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +8,7 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/Dashboard/HomeView/Index.vue'),
+      component: Dashboard,
       children: [
         {
           path: '',
