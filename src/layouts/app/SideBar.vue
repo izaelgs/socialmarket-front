@@ -10,6 +10,7 @@
         tooltip="Edit Profile"
       />
       <SideBarIcon path="/dashboard/manage-stores" icon="mdi:store-cog" tooltip="Manage Stores" />
+      <SideBarIcon path="/dashboard/recent-products" icon="mdi:history" tooltip="Recent Products" />
     </ul>
     <div>
       <div class="sidebar-icon group cursor-pointer" @click="toggleDarkMode">

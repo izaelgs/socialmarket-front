@@ -122,6 +122,22 @@ export const useProductsStore = defineStore('products', () => {
     return productId
   }
 
+  const recentProducts = ref<Product[]>([])
+
+  const fetchRecentProducts = async () => {
+    loading.value = true
+    error.value = null
+    try {
+      const response = await axios.get<Product[]>('products/recent')
+      recentProducts.value = response
+    } catch (err) {
+      error.value = 'Failed to fetch recent products'
+      console.error(err)
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     products,
     loading,
@@ -130,6 +146,8 @@ export const useProductsStore = defineStore('products', () => {
     fetchProduct,
     addProduct,
     updateProduct,
-    removeProduct
+    removeProduct,
+    recentProducts,
+    fetchRecentProducts
   }
 })

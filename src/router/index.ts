@@ -28,6 +28,12 @@ const router = createRouter({
           path: 'manage-store/:id',
           name: 'Manage Store',
           component: () => import('@/views/Dashboard/Store/Index.vue')
+        },
+        {
+          path: 'recent-products',
+          name: 'RecentProducts',
+          component: () => import('@/views/Dashboard/RecentProducts/Index.vue'),
+          meta: { requiresAuth: true }
         }
       ],
       beforeEnter: Guard.auth
