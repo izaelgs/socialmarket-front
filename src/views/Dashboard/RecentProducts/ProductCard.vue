@@ -7,16 +7,24 @@
       <p class="price">{{ formatPrice(product.price) }}</p>
       <p class="date">Added: {{ formatDate(String(product.createdAt)) }}</p>
     </div>
+    <Button v-if="!isInCart" text="Add to Cart" classes="w-full" @click="() => cart.addProduct(product)" />
+    <Button v-else text="Remove from Cart" classes="w-full" @click="() => cart.removeProduct(product.id)" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
 import type { Product } from '@/stores/ProductsStore';
+import { useCart } from '@/composables/useCart';
+import Button from '@/components/Button.vue';
 
-defineProps<{
+const cart = useCart();
+
+const props = defineProps<{
   product: Product;
 }>();
+
+const isInCart = computed(() => cart.products.some(p => p.id === props.product.id));
 
 const formatPrice = (price: string) => {
   return `$${parseFloat(price).toFixed(2)}`;
@@ -46,7 +54,7 @@ const formatDate = (date: string) => {
 
 h3 {
   margin: 0 0 10px;
-  font-size: 1.2em;
+  @apply text-lg;
 }
 
 p {
@@ -54,17 +62,14 @@ p {
 }
 
 .store-name {
-  font-style: italic;
-  color: #666;
+  @apply italic text-gray-500;
 }
 
 .price {
-  font-weight: bold;
-  color: #007bff;
+  @apply font-bold text-green-600;
 }
 
 .date {
-  font-size: 0.9em;
-  color: #888;
+  @apply text-sm text-gray-500;
 }
 </style>

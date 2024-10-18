@@ -34,6 +34,12 @@ const router = createRouter({
           name: 'RecentProducts',
           component: () => import('@/views/Dashboard/RecentProducts/Index.vue'),
           meta: { requiresAuth: true }
+        },
+        {
+          path: 'cart',
+          name: 'Cart',
+          component: () => import('@/views/Dashboard/Cart/Index.vue'),
+          meta: { requiresAuth: true }
         }
       ],
       beforeEnter: Guard.auth

@@ -13,6 +13,15 @@
       <SideBarIcon path="/dashboard/recent-products" icon="mdi:history" tooltip="Recent Products" />
     </ul>
     <div>
+      <div class="sidebar-icon group cursor-pointer">
+        <router-link to="/dashboard/cart" class="dark:text-gray-100 text-gray-900">
+          <Icon icon="mdi:cart" />
+        </router-link>
+        <span v-if="cart.products.length > 0" class="absolute top-0 right-0 rounded-full bg-green-600 text-white text-xs w-5 h-5 flex items-center justify-center">
+          {{ cart.products.length }}
+        </span>
+        <span class="sidebar-tooltip group-hover:scale-100">Cart</span>
+      </div>
       <div class="sidebar-icon group cursor-pointer" @click="toggleDarkMode">
         <div class="dark:text-gray-100 text-gray-900">
           <Icon v-if="darkMode" icon="material-symbols:light-mode" />
@@ -40,7 +49,9 @@ import { Icon } from '@iconify/vue'
 import { useAxiosStore } from '@/services/axiosStore'
 import { useUserStore } from '@/services/userStore'
 import { useRouter } from 'vue-router'
+import { useCart } from '@/composables/useCart'
 
+const cart = useCart()
 const axios = useAxiosStore()
 const router = useRouter()
 const { clearUser } = useUserStore()

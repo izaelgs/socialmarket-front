@@ -15,7 +15,7 @@
 import { defineComponent, onMounted } from 'vue';
 import { useProductsStore } from '@/stores/ProductsStore';
 import { storeToRefs } from 'pinia';
-import ProductCard from '@/components/ProductCard.vue';
+import ProductCard from './ProductCard.vue';
 import SkeletonProductCard from '@/components/SkeletonProductCard.vue';
 
 const productsStore = useProductsStore();
