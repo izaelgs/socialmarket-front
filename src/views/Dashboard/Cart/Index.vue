@@ -1,9 +1,8 @@
 <template>
-  <div class="w-full">
-    <h1>Products in Cart</h1>
+  <div class="w-full dark:bg-gray-800 dark:text-white">
+    <h1 class="text-2xl font-bold mb-4 dark:text-gray-200">Products in Cart</h1>
     <template v-if="!order.isLoading">
-
-      <div v-if="cart.products.length === 0" class="flex justify-center items-center h-96">
+      <div v-if="cart.products.length === 0" class="flex justify-center items-center h-96 dark:text-gray-300">
         <p>No products in cart</p>
       </div>
       <div v-else>
@@ -13,7 +12,7 @@
       </div>
       
       <div class="flex justify-end" v-if="cart.products.length > 0">
-        <Button text="Confirm Order" classes="w-40" @click="handleSubmit()" />
+        <Button text="Confirm Order" classes="w-40 dark:bg-green-700 dark:hover:bg-green-600" @click="handleSubmit()" />
       </div>
     </template>
     <template v-else>
@@ -39,6 +38,7 @@ const handleSubmit = async () => {
   const checkoutUrl = await order.createOrder(cart.products)
 
   if (checkoutUrl) {
+    cart.clearCart();
     window.location.href = checkoutUrl;
   }
 }

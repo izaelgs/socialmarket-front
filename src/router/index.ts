@@ -40,6 +40,18 @@ const router = createRouter({
           name: 'Cart',
           component: () => import('@/views/Dashboard/Cart/Index.vue'),
           meta: { requiresAuth: true }
+        },
+        {
+          path: 'order/success',
+          name: 'OrderSuccess',
+          component: () => import('@/views/Dashboard/Order/Success.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'order/cancel',
+          name: 'OrderCancel',
+          component: () => import('@/views/Dashboard/Order/Cancel.vue'),
+          meta: { requiresAuth: true }
         }
       ],
       beforeEnter: Guard.auth
