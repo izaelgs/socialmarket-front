@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full dark:bg-gray-800 dark:text-white">
+  <div class="w-full dark:text-white">
     <h1 class="text-2xl font-bold mb-4 dark:text-gray-200">Products in Cart</h1>
     <template v-if="!order.isLoading">
       <div v-if="cart.products.length === 0" class="flex justify-center items-center h-96 dark:text-gray-300">

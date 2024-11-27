@@ -11,7 +11,7 @@ const props = defineProps({
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img
         class="mx-auto h-10 w-auto"
-        src="https://tailwindui.com/img/logos/mark.svg?color=green&shade=600"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/1024px-Tailwind_CSS_Logo.svg.png"
         alt="Your Company"
       />
       <h2

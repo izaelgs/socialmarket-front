@@ -66,6 +66,31 @@
             Sign in
           </button>
         </div>
+
+        <div class="relative mt-4">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="bg-white dark:bg-gray-900 px-2 text-gray-500">Or continue with</span>
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="button"
+            @click="handleGoogleLogin"
+            class="flex w-full justify-center items-center gap-2 rounded-md bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            :disabled="isLoading"
+          >
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"
+              alt="Google"
+              class="w-5 h-5"
+            />
+            Sign in with Google
+          </button>
+        </div>
       </form>
     </template>
 
@@ -145,6 +170,19 @@ const handleResetPassword = async () => {
   } catch (error) {
     console.error('Error fetching data:', error)
     toast.error('An unknown error occurred. Please try again.')
+  }
+}
+
+const handleGoogleLogin = async () => {
+  isLoading.value = true
+
+  try {
+    window.location.href = `${import.meta.env.VITE_BASE_URL}/auth/google`
+  } catch (error: any) {
+    console.error('Error initiating Google login:', error)
+    toast.error('Failed to initiate Google login. Please try again.')
+  } finally {
+    isLoading.value = false
   }
 }
 </script>

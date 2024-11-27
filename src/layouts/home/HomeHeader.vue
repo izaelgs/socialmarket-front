@@ -6,7 +6,7 @@
           <span class="sr-only">Your Company</span>
           <img
             class="h-8 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=green&shade=600"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/1024px-Tailwind_CSS_Logo.svg.png"
             alt=""
           />
         </a>
@@ -77,7 +77,7 @@
             <span class="sr-only">Your Company</span>
             <img
               class="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=green&shade=600"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/1024px-Tailwind_CSS_Logo.svg.png"
               alt=""
             />
           </a>
